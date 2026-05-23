@@ -1,0 +1,22 @@
+;; Canonical NOTA examples for signal-persona-agent.
+
+(Send (agent-alpha delivery-0001 42 router [hello agent] ((External (Owner))) (Owner)))
+(Cancel (agent-alpha delivery-0001))
+(SubscribeTranscript (agent-alpha))
+(TranscriptRetraction (TranscriptToken 7))
+(Observe AllAgents)
+(Tap (All))
+(Untap (ObserverSubscriptionToken 3))
+
+(DeliveryAcknowledged (agent-alpha delivery-0001 42))
+(DeliveryFailed (agent-alpha delivery-0001 42 (BackendUnavailable Claude)))
+(Cancelled (agent-alpha delivery-0001))
+(TranscriptSnapshot (agent-alpha (TranscriptToken 7) 2 [[first line] [second line]]))
+(TranscriptSubscriptionRetracted ((TranscriptToken 7)))
+(Observed (Agent (agent-alpha Claude Running)))
+(RequestUnimplemented (NotBuiltYet))
+(ObserverSubscriptionOpened (ObserverSubscriptionOpened (ObserverSubscriptionToken 5)))
+
+(TranscriptDelta (agent-alpha (TranscriptToken 7) 3 [third line]))
+(OperationReceived (Send))
+(EffectEmitted ((Assert Asserted)))
