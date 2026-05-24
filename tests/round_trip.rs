@@ -1,11 +1,7 @@
 use std::fmt::Debug;
 
 use nota_codec::{Decoder, Encoder, NotaDecode, NotaEncode};
-use signal_frame::{
-    ExchangeIdentifier, ExchangeLane, LaneSequence, NonEmpty, Reply as FrameReply, RequestPayload,
-    SessionEpoch, StreamEventIdentifier, SubReply, SubscriptionTokenInner,
-};
-use signal_persona_agent::{
+use signal_agent::{
     AgentBackend, AgentIdentifier, AgentLifecycle, AgentObservation, DeliveryAcknowledgement,
     DeliveryCancellation, DeliveryCancellationAcknowledgement, DeliveryFailure,
     DeliveryFailureReason, DeliveryToken, EffectEmitted, Event, Frame, FrameBody, MessageBody,
@@ -13,6 +9,10 @@ use signal_persona_agent::{
     OperationKind, OperationReceived, Reply, RequestUnimplemented, StreamKind, TranscriptDelta,
     TranscriptLine, TranscriptSequence, TranscriptSnapshot, TranscriptSubscription,
     TranscriptSubscriptionRetracted, TranscriptToken, UnimplementedReason,
+};
+use signal_frame::{
+    ExchangeIdentifier, ExchangeLane, LaneSequence, NonEmpty, Reply as FrameReply, RequestPayload,
+    SessionEpoch, StreamEventIdentifier, SubReply, SubscriptionTokenInner,
 };
 use signal_persona_origin::{ConnectionClass, IngressContext};
 use signal_sema::{SemaObservation, SemaOperation, SemaOutcome};
@@ -160,8 +160,8 @@ fn operations_round_trip_through_length_prefixed_frames() {
         Operation::SubscribeTranscript(TranscriptSubscription { agent: agent() }),
         Operation::TranscriptRetraction(transcript_token()),
         Operation::Observe(ObservationSelection::Agent(agent())),
-        Operation::Tap(signal_persona_agent::ObserverFilter::All),
-        Operation::Untap(signal_persona_agent::ObserverSubscriptionToken::new(
+        Operation::Tap(signal_agent::ObserverFilter::All),
+        Operation::Untap(signal_agent::ObserverSubscriptionToken::new(
             SubscriptionTokenInner::new(3),
         )),
     ];
@@ -197,8 +197,8 @@ fn replies_round_trip_through_length_prefixed_frames() {
         Reply::RequestUnimplemented(RequestUnimplemented {
             reason: UnimplementedReason::NotBuiltYet,
         }),
-        Reply::ObserverSubscriptionOpened(signal_persona_agent::ObserverSubscriptionOpened::new(
-            signal_persona_agent::ObserverSubscriptionToken::new(SubscriptionTokenInner::new(5)),
+        Reply::ObserverSubscriptionOpened(signal_agent::ObserverSubscriptionOpened::new(
+            signal_agent::ObserverSubscriptionToken::new(SubscriptionTokenInner::new(5)),
         )),
     ];
 
@@ -259,7 +259,7 @@ fn public_payloads_round_trip_through_nota_text() {
         token: delivery_token(),
         message_slot: MessageSlot::new(42),
         reason: DeliveryFailureReason::AcknowledgementChainBroken(
-            signal_persona_agent::AcknowledgementHop::BackendDaemon,
+            signal_agent::AcknowledgementHop::BackendDaemon,
         ),
     });
     round_trip_nota(RequestUnimplemented {
@@ -306,7 +306,7 @@ fn operation_kind_and_stream_witnesses_are_generated_by_macro() {
     assert_eq!(close.kind(), OperationKind::TranscriptRetraction);
     assert_eq!(close.closed_stream(), Some(StreamKind::TranscriptStream));
 
-    let tap = Operation::Tap(signal_persona_agent::ObserverFilter::OperationsOnly);
+    let tap = Operation::Tap(signal_agent::ObserverFilter::OperationsOnly);
     assert_eq!(tap.kind(), OperationKind::Tap);
     assert_eq!(tap.opened_stream(), Some(StreamKind::ObserverStream));
 
@@ -329,8 +329,6 @@ fn operation_and_reply_variants_round_trip_through_nota_text() {
     }));
     assert_eq!(reply_text, "(RequestUnimplemented (NotBuiltYet))");
 
-    let tap_text = round_trip_nota(Operation::Tap(
-        signal_persona_agent::ObserverFilter::EffectsOnly,
-    ));
+    let tap_text = round_trip_nota(Operation::Tap(signal_agent::ObserverFilter::EffectsOnly));
     assert_eq!(tap_text, "(Tap (EffectsOnly))");
 }

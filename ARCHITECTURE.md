@@ -1,9 +1,9 @@
-# signal-persona-agent — Architecture
+# signal-agent — Architecture
 
-`signal-persona-agent` is the ordinary Signal contract for the `persona-agent`
-front door. It is the router-facing working signal in the `persona-agent` triad:
-`persona-agent` runtime, `signal-persona-agent` ordinary contract, and
-`owner-signal-persona-agent` owner-only policy contract.
+`signal-agent` is the ordinary Signal contract for the `agent`
+front door. It is the router-facing working signal in the `agent` triad:
+`agent` runtime, `signal-agent` ordinary contract, and
+`owner-signal-agent` owner-only policy contract.
 
 This shape follows
 `/home/li/primary/reports/designer/309-design-agent-component-abstraction.md`
@@ -52,7 +52,7 @@ the router/message durable slot vocabulary.
 
 This crate does not own:
 
-- `persona-agent-daemon` actor topology, redb tables, backend registry, or
+- `agent-daemon` actor topology, redb tables, backend registry, or
   delivery reducers;
 - owner-only spawn, retire, backend policy, or route-toggle verbs;
 - backend-private contracts for Claude, Codex, Gemini, Pi, OpenCode, or the

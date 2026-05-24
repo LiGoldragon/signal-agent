@@ -1,5 +1,5 @@
 {
-  description = "Persona agent ordinary signal contract.";
+  description = "Agent ordinary signal contract.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -73,7 +73,7 @@
         };
 
         devShells.default = pkgs.mkShell {
-          name = "signal-persona-agent";
+          name = "signal-agent";
           packages = [
             pkgs.jujutsu
             pkgs.pkg-config

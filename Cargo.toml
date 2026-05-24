@@ -1,15 +1,15 @@
 [package]
-name         = "signal-persona-agent"
+name         = "signal-agent"
 version      = "0.1.0"
 edition      = "2024"
 rust-version = "1.85"
 license      = "MIT OR Apache-2.0"
-repository   = "https://github.com/LiGoldragon/signal-persona-agent"
-description  = "Ordinary Signal contract for the Persona agent front door."
+repository   = "https://github.com/LiGoldragon/signal-agent"
+description  = "Ordinary Signal contract for the agent front door."
 publish      = false
 
 [lib]
-name = "signal_persona_agent"
+name = "signal_agent"
 path = "src/lib.rs"
 
 [dependencies]

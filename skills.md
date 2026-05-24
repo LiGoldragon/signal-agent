@@ -1,6 +1,6 @@
-# skills — signal-persona-agent
+# skills — signal-agent
 
-Per-repo guide for the ordinary Persona agent front-door contract.
+Per-repo guide for the ordinary agent front-door contract.
 
 ## Checkpoint
 
@@ -26,7 +26,7 @@ Before changing code in this repo, read:
 ## Does not own
 
 - owner-only agent policy or spawn verbs;
-- `persona-agent-daemon` actors, storage, backend registry, or child process
+- `agent-daemon` actors, storage, backend registry, or child process
   supervision;
 - backend-private contracts such as future `signal-persona-claude`;
 - router delivery durability state.

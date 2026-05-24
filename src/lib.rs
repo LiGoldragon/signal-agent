@@ -1,10 +1,10 @@
-//! Ordinary Signal contract for the Persona agent front door.
+//! Ordinary Signal contract for the agent front door.
 //!
-//! `persona-router` sends deliveries to one `persona-agent` socket. The agent
+//! `persona-router` sends deliveries to one `agent` socket. The agent
 //! daemon multiplexes by [`AgentIdentifier`] and forwards to backend daemons
 //! according to owner-managed policy. This crate carries only the typed wire
 //! vocabulary; runtime routing, storage, backend spawning, and delivery
-//! reducers live in `persona-agent`.
+//! reducers live in `agent`.
 
 use nota_codec::{Decoder, Encoder, NotaDecode, NotaEncode, NotaEnum, NotaRecord, NotaTransparent};
 use rkyv::{Archive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
@@ -17,7 +17,7 @@ pub use signal_frame::{
 pub use signal_persona_message::{MessageBody, MessageSender, MessageSlot};
 pub use signal_persona_origin::{ConnectionClass, IngressContext};
 
-/// Stable identity for one logical Persona agent run.
+/// Stable identity for one logical agent run.
 #[derive(
     Archive,
     RkyvSerialize,

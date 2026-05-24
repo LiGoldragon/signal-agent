@@ -281,6 +281,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b39cdef0fa800fc44525c84ccb54a029961a8215f9619753635a9c0d2538d46d"
 
 [[package]]
+name = "signal-agent"
+version = "0.1.0"
+dependencies = [
+ "nota-codec",
+ "rkyv",
+ "signal-frame",
+ "signal-persona-message",
+ "signal-persona-origin 0.1.0 (git+https://github.com/LiGoldragon/signal-persona-origin.git?branch=main)",
+ "signal-sema",
+]
+
+[[package]]
 name = "signal-core"
 version = "0.1.0"
 source = "git+https://github.com/LiGoldragon/signal-core.git#c59bcb95e5282654138295c11e09e5242f98a776"
@@ -334,18 +346,6 @@ dependencies = [
  "signal-frame",
  "signal-persona-engine-management",
  "signal-persona-origin 0.1.0 (git+https://github.com/LiGoldragon/signal-persona-origin.git)",
- "signal-sema",
-]
-
-[[package]]
-name = "signal-persona-agent"
-version = "0.1.0"
-dependencies = [
- "nota-codec",
- "rkyv",
- "signal-frame",
- "signal-persona-message",
- "signal-persona-origin 0.1.0 (git+https://github.com/LiGoldragon/signal-persona-origin.git?branch=main)",
  "signal-sema",
 ]
 

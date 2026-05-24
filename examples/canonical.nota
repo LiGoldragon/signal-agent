@@ -1,4 +1,4 @@
-;; Canonical NOTA examples for signal-persona-agent.
+;; Canonical NOTA examples for signal-agent.
 
 (Send (agent-alpha delivery-0001 42 router [hello agent] ((External (Owner))) (Owner)))
 (Cancel (agent-alpha delivery-0001))
