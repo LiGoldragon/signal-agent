@@ -14,7 +14,7 @@ pub use signal_frame::{
     ExchangeFrameBody as FrameExchangeFrameBody, HandshakeReply, HandshakeRequest, ProtocolVersion,
     Request as FrameRequest, SIGNAL_FRAME_PROTOCOL_VERSION,
 };
-pub use signal_persona_message::{MessageBody, MessageSender, MessageSlot};
+pub use signal_message::{MessageBody, MessageSender, MessageSlot};
 pub use signal_persona_origin::{ConnectionClass, IngressContext};
 
 /// Stable identity for one logical agent run.

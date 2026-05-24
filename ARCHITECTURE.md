@@ -45,7 +45,7 @@ This crate owns:
 It imports `IngressContext` and `ConnectionClass` from `signal-persona-origin`
 so the front door can carry already-classified ingress provenance without
 inventing a parallel origin shape. It imports message sender, body, and slot
-records from `signal-persona-message` so delivery acknowledgement stays keyed to
+records from `signal-message` so delivery acknowledgement stays keyed to
 the router/message durable slot vocabulary.
 
 ## Not owned
