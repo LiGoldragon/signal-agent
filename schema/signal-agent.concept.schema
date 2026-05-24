@@ -1,0 +1,38 @@
+{}
+
+[
+  (Call [Prompt Tool Cancel])
+  (Session [Open Close Status])
+  (Transcript [Watch Unwatch])
+]
+
+[]
+
+[]
+
+{
+  Call [(Prompt Prompt) (Tool Tool) (Cancel Cancel)]
+  Session [(Open Open) (Close Close) (Status Status)]
+  Transcript [(Watch Watch) (Unwatch Unwatch)]
+  Prompt (Text)
+  Tool (Text)
+  Cancel (Identifier)
+  Open (Text)
+  Close (Identifier)
+  Backend (Text)
+  Provider (Text)
+  Start (Text)
+  Stop (Text)
+  Status (Text)
+  Watch (Text)
+  Unwatch (Text)
+  Text (String)
+  Identifier (u64)
+  Name (String)
+  Path (String)
+}
+
+[
+  (Version 0 1)
+  (Status Concept)
+]
