@@ -6,7 +6,7 @@
 //! vocabulary; runtime routing, storage, backend spawning, and delivery
 //! reducers live in `agent`.
 
-use nota_codec::{Decoder, Encoder, NotaDecode, NotaEncode, NotaEnum, NotaRecord, NotaTransparent};
+use nota_next::{Block, Delimiter, NotaBlock, NotaDecode, NotaDecodeError, NotaEncode};
 use rkyv::{Archive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
 use signal_frame::{SubscriptionTokenInner, signal_channel};
 
@@ -22,7 +22,8 @@ pub use signal_persona_origin::{ConnectionClass, IngressContext};
     Archive,
     RkyvSerialize,
     RkyvDeserialize,
-    NotaTransparent,
+    NotaEncode,
+    NotaDecode,
     Debug,
     Clone,
     PartialEq,
@@ -45,7 +46,17 @@ impl AgentIdentifier {
 
 /// Backend family assigned to an agent run by owner policy.
 #[derive(
-    Archive, RkyvSerialize, RkyvDeserialize, NotaEnum, Debug, Clone, Copy, PartialEq, Eq, Hash,
+    Archive,
+    RkyvSerialize,
+    RkyvDeserialize,
+    NotaEncode,
+    NotaDecode,
+    Debug,
+    Clone,
+    Copy,
+    PartialEq,
+    Eq,
+    Hash,
 )]
 pub enum AgentBackend {
     Claude,
@@ -61,7 +72,8 @@ pub enum AgentBackend {
     Archive,
     RkyvSerialize,
     RkyvDeserialize,
-    NotaTransparent,
+    NotaEncode,
+    NotaDecode,
     Debug,
     Clone,
     PartialEq,
@@ -83,7 +95,9 @@ impl DeliveryToken {
 }
 
 /// Message bytes and provenance routed to a single logical agent.
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaRecord, Debug, Clone, PartialEq, Eq)]
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEncode, NotaDecode, Debug, Clone, PartialEq, Eq,
+)]
 pub struct MessageDelivery {
     pub agent: AgentIdentifier,
     pub delivery_token: DeliveryToken,
@@ -95,14 +109,18 @@ pub struct MessageDelivery {
 }
 
 /// Retracts one in-flight delivery.
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaRecord, Debug, Clone, PartialEq, Eq)]
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEncode, NotaDecode, Debug, Clone, PartialEq, Eq,
+)]
 pub struct DeliveryCancellation {
     pub agent: AgentIdentifier,
     pub token: DeliveryToken,
 }
 
 /// Backend or harness accepted the delivery bytes.
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaRecord, Debug, Clone, PartialEq, Eq)]
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEncode, NotaDecode, Debug, Clone, PartialEq, Eq,
+)]
 pub struct DeliveryAcknowledgement {
     pub agent: AgentIdentifier,
     pub token: DeliveryToken,
@@ -110,14 +128,18 @@ pub struct DeliveryAcknowledgement {
 }
 
 /// Cancellation reached the component that owned the in-flight delivery.
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaRecord, Debug, Clone, PartialEq, Eq)]
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEncode, NotaDecode, Debug, Clone, PartialEq, Eq,
+)]
 pub struct DeliveryCancellationAcknowledgement {
     pub agent: AgentIdentifier,
     pub token: DeliveryToken,
 }
 
 /// Delivery failure reported back through the agent front door.
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaRecord, Debug, Clone, PartialEq, Eq)]
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEncode, NotaDecode, Debug, Clone, PartialEq, Eq,
+)]
 pub struct DeliveryFailure {
     pub agent: AgentIdentifier,
     pub token: DeliveryToken,
@@ -125,7 +147,9 @@ pub struct DeliveryFailure {
     pub reason: DeliveryFailureReason,
 }
 
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaEnum, Debug, Clone, PartialEq, Eq)]
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEncode, NotaDecode, Debug, Clone, PartialEq, Eq,
+)]
 pub enum DeliveryFailureReason {
     BackendUnavailable(AgentBackend),
     TransportRejected,
@@ -135,7 +159,17 @@ pub enum DeliveryFailureReason {
 }
 
 #[derive(
-    Archive, RkyvSerialize, RkyvDeserialize, NotaEnum, Debug, Clone, Copy, PartialEq, Eq, Hash,
+    Archive,
+    RkyvSerialize,
+    RkyvDeserialize,
+    NotaEncode,
+    NotaDecode,
+    Debug,
+    Clone,
+    Copy,
+    PartialEq,
+    Eq,
+    Hash,
 )]
 pub enum AcknowledgementHop {
     BackendDaemon,
@@ -158,18 +192,27 @@ impl TranscriptToken {
 }
 
 impl NotaEncode for TranscriptToken {
-    fn encode(&self, encoder: &mut Encoder) -> nota_codec::Result<()> {
-        encoder.start_record("TranscriptToken")?;
-        self.0.value().encode(encoder)?;
-        encoder.end_record()
+    fn to_nota(&self) -> String {
+        Delimiter::Parenthesis.wrap(["TranscriptToken".to_owned(), self.0.value().to_string()])
     }
 }
 
 impl NotaDecode for TranscriptToken {
-    fn decode(decoder: &mut Decoder<'_>) -> nota_codec::Result<Self> {
-        decoder.expect_record_head("TranscriptToken")?;
-        let value = u64::decode(decoder)?;
-        decoder.expect_record_end()?;
+    fn from_nota_block(block: &Block) -> Result<Self, NotaDecodeError> {
+        let fields =
+            NotaBlock::new(block).expect_children(Delimiter::Parenthesis, "TranscriptToken", 2)?;
+        let head = fields[0]
+            .demote_to_string()
+            .ok_or(NotaDecodeError::ExpectedAtom {
+                type_name: "TranscriptToken",
+            })?;
+        if head != "TranscriptToken" {
+            return Err(NotaDecodeError::UnknownVariant {
+                enum_name: "TranscriptToken",
+                variant: head.to_owned(),
+            });
+        }
+        let value = NotaBlock::new(&fields[1]).parse_integer()?;
         Ok(Self(SubscriptionTokenInner::new(value)))
     }
 }
@@ -178,7 +221,8 @@ impl NotaDecode for TranscriptToken {
     Archive,
     RkyvSerialize,
     RkyvDeserialize,
-    NotaTransparent,
+    NotaEncode,
+    NotaDecode,
     Debug,
     Clone,
     Copy,
@@ -201,7 +245,16 @@ impl TranscriptSequence {
 }
 
 #[derive(
-    Archive, RkyvSerialize, RkyvDeserialize, NotaTransparent, Debug, Clone, PartialEq, Eq, Hash,
+    Archive,
+    RkyvSerialize,
+    RkyvDeserialize,
+    NotaEncode,
+    NotaDecode,
+    Debug,
+    Clone,
+    PartialEq,
+    Eq,
+    Hash,
 )]
 pub struct TranscriptLine(String);
 
@@ -216,13 +269,17 @@ impl TranscriptLine {
 }
 
 /// Opens the push transcript stream for one agent.
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaRecord, Debug, Clone, PartialEq, Eq)]
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEncode, NotaDecode, Debug, Clone, PartialEq, Eq,
+)]
 pub struct TranscriptSubscription {
     pub agent: AgentIdentifier,
 }
 
 /// Initial transcript state returned when a subscription opens.
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaRecord, Debug, Clone, PartialEq, Eq)]
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEncode, NotaDecode, Debug, Clone, PartialEq, Eq,
+)]
 pub struct TranscriptSnapshot {
     pub agent: AgentIdentifier,
     pub token: TranscriptToken,
@@ -231,7 +288,9 @@ pub struct TranscriptSnapshot {
 }
 
 /// Transcript delta pushed after the opening snapshot.
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaRecord, Debug, Clone, PartialEq, Eq)]
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEncode, NotaDecode, Debug, Clone, PartialEq, Eq,
+)]
 pub struct TranscriptDelta {
     pub agent: AgentIdentifier,
     pub token: TranscriptToken,
@@ -240,26 +299,34 @@ pub struct TranscriptDelta {
 }
 
 /// Acknowledges transcript stream retraction.
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaRecord, Debug, Clone, PartialEq, Eq)]
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEncode, NotaDecode, Debug, Clone, PartialEq, Eq,
+)]
 pub struct TranscriptSubscriptionRetracted {
     pub token: TranscriptToken,
 }
 
 /// Selects the ordinary observation returned by `Observe`.
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaEnum, Debug, Clone, PartialEq, Eq)]
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEncode, NotaDecode, Debug, Clone, PartialEq, Eq,
+)]
 pub enum ObservationSelection {
     Agent(AgentIdentifier),
     AllAgents,
 }
 
 /// Current state visible through the ordinary observation surface.
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaEnum, Debug, Clone, PartialEq, Eq)]
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEncode, NotaDecode, Debug, Clone, PartialEq, Eq,
+)]
 pub enum Observation {
     Agent(AgentObservation),
     Agents(Vec<AgentObservation>),
 }
 
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaRecord, Debug, Clone, PartialEq, Eq)]
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEncode, NotaDecode, Debug, Clone, PartialEq, Eq,
+)]
 pub struct AgentObservation {
     pub agent: AgentIdentifier,
     pub backend: AgentBackend,
@@ -267,7 +334,17 @@ pub struct AgentObservation {
 }
 
 #[derive(
-    Archive, RkyvSerialize, RkyvDeserialize, NotaEnum, Debug, Clone, Copy, PartialEq, Eq, Hash,
+    Archive,
+    RkyvSerialize,
+    RkyvDeserialize,
+    NotaEncode,
+    NotaDecode,
+    Debug,
+    Clone,
+    Copy,
+    PartialEq,
+    Eq,
+    Hash,
 )]
 pub enum AgentLifecycle {
     Starting,
@@ -278,7 +355,17 @@ pub enum AgentLifecycle {
 }
 
 #[derive(
-    Archive, RkyvSerialize, RkyvDeserialize, NotaEnum, Debug, Clone, Copy, PartialEq, Eq, Hash,
+    Archive,
+    RkyvSerialize,
+    RkyvDeserialize,
+    NotaEncode,
+    NotaDecode,
+    Debug,
+    Clone,
+    Copy,
+    PartialEq,
+    Eq,
+    Hash,
 )]
 pub enum UnimplementedReason {
     NotBuiltYet,
@@ -321,13 +408,17 @@ signal_channel! {
 
 /// A valid request reached the daemon but is not implemented in the current
 /// skeleton.
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaRecord, Debug, Clone, PartialEq, Eq)]
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEncode, NotaDecode, Debug, Clone, PartialEq, Eq,
+)]
 pub struct RequestUnimplemented {
     pub reason: UnimplementedReason,
 }
 
 /// Observer event emitted before an inbound operation lowers into daemon work.
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaRecord, Debug, Clone, PartialEq, Eq)]
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEncode, NotaDecode, Debug, Clone, PartialEq, Eq,
+)]
 pub struct OperationReceived {
     pub operation: OperationKind,
 }
@@ -335,7 +426,17 @@ pub struct OperationReceived {
 /// Contract-owned outcome for work the daemon emits to observers after
 /// processing an operation.
 #[derive(
-    Archive, RkyvSerialize, RkyvDeserialize, NotaEnum, Debug, Clone, Copy, PartialEq, Eq, Hash,
+    Archive,
+    RkyvSerialize,
+    RkyvDeserialize,
+    NotaEncode,
+    NotaDecode,
+    Debug,
+    Clone,
+    Copy,
+    PartialEq,
+    Eq,
+    Hash,
 )]
 pub enum EffectOutcome {
     Delivered,
@@ -348,7 +449,9 @@ pub enum EffectOutcome {
 }
 
 /// Observer event emitted after daemon work produces an externally visible effect.
-#[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaRecord, Debug, Clone, PartialEq, Eq)]
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEncode, NotaDecode, Debug, Clone, PartialEq, Eq,
+)]
 pub struct EffectEmitted {
     pub operation: OperationKind,
     pub outcome: EffectOutcome,

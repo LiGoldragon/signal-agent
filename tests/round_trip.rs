@@ -1,6 +1,6 @@
 use std::fmt::Debug;
 
-use nota_codec::{Decoder, Encoder, NotaDecode, NotaEncode};
+use nota_next::{NotaDecode, NotaEncode, NotaSource};
 use signal_agent::{
     AgentBackend, AgentIdentifier, AgentLifecycle, AgentObservation, DeliveryAcknowledgement,
     DeliveryCancellation, DeliveryCancellationAcknowledgement, DeliveryFailure,
@@ -140,11 +140,8 @@ fn round_trip_nota<T>(value: T) -> String
 where
     T: NotaEncode + NotaDecode + PartialEq + Debug,
 {
-    let mut encoder = Encoder::new();
-    value.encode(&mut encoder).expect("encode nota");
-    let text = encoder.into_string();
-    let mut decoder = Decoder::new(&text);
-    let recovered = T::decode(&mut decoder).expect("decode nota");
+    let text = value.to_nota();
+    let recovered = NotaSource::new(&text).parse::<T>().expect("decode nota");
     assert_eq!(recovered, value);
     text
 }
@@ -231,13 +228,13 @@ fn events_round_trip_through_length_prefixed_frames() {
 fn public_payloads_round_trip_through_nota_text() {
     assert_eq!(
         round_trip_nota(AgentIdentifier::new("agent-alpha")),
-        "agent-alpha"
+        "[agent-alpha]"
     );
     assert_eq!(round_trip_nota(AgentBackend::Claude), "Claude");
     assert_eq!(round_trip_nota(AgentBackend::OpenCode), "OpenCode");
     assert_eq!(
         round_trip_nota(DeliveryToken::new("delivery-0001")),
-        "delivery-0001"
+        "[delivery-0001]"
     );
     assert_eq!(round_trip_nota(transcript_token()), "(TranscriptToken 7)");
 
@@ -330,5 +327,5 @@ fn operation_and_reply_variants_round_trip_through_nota_text() {
     assert_eq!(reply_text, "(RequestUnimplemented (NotBuiltYet))");
 
     let tap_text = round_trip_nota(Operation::Tap(signal_agent::ObserverFilter::EffectsOnly));
-    assert_eq!(tap_text, "(Tap (EffectsOnly))");
+    assert_eq!(tap_text, "(Tap EffectsOnly)");
 }
