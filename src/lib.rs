@@ -332,8 +332,24 @@ pub struct OperationReceived {
     pub operation: OperationKind,
 }
 
-/// Observer event emitted after daemon work commits a Sema-classified effect.
+/// Contract-owned outcome for work the daemon emits to observers after
+/// processing an operation.
+#[derive(
+    Archive, RkyvSerialize, RkyvDeserialize, NotaEnum, Debug, Clone, Copy, PartialEq, Eq, Hash,
+)]
+pub enum EffectOutcome {
+    Delivered,
+    Cancelled,
+    Observed,
+    StreamOpened,
+    StreamClosed,
+    Failed,
+    NoChange,
+}
+
+/// Observer event emitted after daemon work produces an externally visible effect.
 #[derive(Archive, RkyvSerialize, RkyvDeserialize, NotaRecord, Debug, Clone, PartialEq, Eq)]
 pub struct EffectEmitted {
-    pub observation: signal_sema::SemaObservation,
+    pub operation: OperationKind,
+    pub outcome: EffectOutcome,
 }

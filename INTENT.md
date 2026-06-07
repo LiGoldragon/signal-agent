@@ -35,7 +35,7 @@ The `Agent` channel carries:
   and `RequestUnimplemented` (skeleton honesty).
 - **Events:** `TranscriptDelta` on the open transcript stream; the
   macro-injected `Tap`/`Untap` observer stream taps operations and
-  Sema effects, distinct from the transcript stream.
+  contract-owned effects, distinct from the transcript stream.
 
 A single agent socket is multiplexed by `AgentIdentifier`.
 

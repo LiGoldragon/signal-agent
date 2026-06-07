@@ -4,18 +4,17 @@ use nota_codec::{Decoder, Encoder, NotaDecode, NotaEncode};
 use signal_agent::{
     AgentBackend, AgentIdentifier, AgentLifecycle, AgentObservation, DeliveryAcknowledgement,
     DeliveryCancellation, DeliveryCancellationAcknowledgement, DeliveryFailure,
-    DeliveryFailureReason, DeliveryToken, EffectEmitted, Event, Frame, FrameBody, MessageBody,
-    MessageDelivery, MessageSender, MessageSlot, Observation, ObservationSelection, Operation,
-    OperationKind, OperationReceived, Reply, RequestUnimplemented, StreamKind, TranscriptDelta,
-    TranscriptLine, TranscriptSequence, TranscriptSnapshot, TranscriptSubscription,
-    TranscriptSubscriptionRetracted, TranscriptToken, UnimplementedReason,
+    DeliveryFailureReason, DeliveryToken, EffectEmitted, EffectOutcome, Event, Frame, FrameBody,
+    MessageBody, MessageDelivery, MessageSender, MessageSlot, Observation, ObservationSelection,
+    Operation, OperationKind, OperationReceived, Reply, RequestUnimplemented, StreamKind,
+    TranscriptDelta, TranscriptLine, TranscriptSequence, TranscriptSnapshot,
+    TranscriptSubscription, TranscriptSubscriptionRetracted, TranscriptToken, UnimplementedReason,
 };
 use signal_frame::{
     ExchangeIdentifier, ExchangeLane, LaneSequence, NonEmpty, Reply as FrameReply, RequestPayload,
     SessionEpoch, StreamEventIdentifier, SubReply, SubscriptionTokenInner,
 };
 use signal_persona_origin::{ConnectionClass, IngressContext};
-use signal_sema::{SemaObservation, SemaOperation, SemaOutcome};
 
 fn exchange() -> ExchangeIdentifier {
     ExchangeIdentifier::new(
@@ -83,7 +82,8 @@ fn observation() -> Observation {
 
 fn effect_emitted() -> EffectEmitted {
     EffectEmitted {
-        observation: SemaObservation::new(SemaOperation::Assert, SemaOutcome::Asserted),
+        operation: OperationKind::Send,
+        outcome: EffectOutcome::Delivered,
     }
 }
 

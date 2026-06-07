@@ -18,7 +18,6 @@ rkyv = { version = "0.8", default-features = false, features = ["std", "bytechec
 signal-frame = { git = "https://github.com/LiGoldragon/signal-frame.git", branch = "main" }
 signal-message = { git = "https://github.com/LiGoldragon/signal-message.git", branch = "main" }
 signal-persona-origin = { git = "https://github.com/LiGoldragon/signal-persona-origin.git", branch = "main" }
-signal-sema = { git = "https://github.com/LiGoldragon/signal-sema.git", branch = "main" }
 
 [lints.rust]
 unsafe_code = "forbid"

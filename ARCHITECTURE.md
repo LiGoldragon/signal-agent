@@ -25,8 +25,8 @@ This crate carries four peer-callable relations:
   state, such as one agent's backend and lifecycle.
 
 The macro-injected `Tap` / `Untap` observer stream exists because this is an
-observable component contract. `Tap` observes operations and Sema effects; it is
-not the transcript stream.
+observable component contract. `Tap` observes operations and contract-owned
+effects; it is not the transcript stream.
 
 ## Owned vocabulary
 
