@@ -2,19 +2,19 @@ use std::fmt::Debug;
 
 use nota_next::{NotaDecode, NotaEncode, NotaSource};
 use signal_agent::{
-    AgentBackend, AgentIdentifier, AgentLifecycle, AgentObservation, DeliveryAcknowledgement,
-    DeliveryCancellation, DeliveryCancellationAcknowledgement, DeliveryFailure,
-    DeliveryFailureReason, DeliveryToken, EffectEmitted, EffectOutcome, Event, Frame, FrameBody,
-    MessageBody, MessageDelivery, MessageSender, MessageSlot, Observation, ObservationSelection,
-    Operation, OperationKind, OperationReceived, Reply, RequestUnimplemented, StreamKind,
-    TranscriptDelta, TranscriptLine, TranscriptSequence, TranscriptSnapshot,
-    TranscriptSubscription, TranscriptSubscriptionRetracted, TranscriptToken, UnimplementedReason,
+    AgentBackend, AgentIdentifier, AgentLifecycle, AgentObservation, ConnectionClass,
+    DeliveryAcknowledgement, DeliveryCancellation, DeliveryCancellationAcknowledgement,
+    DeliveryFailure, DeliveryFailureReason, DeliveryToken, EffectEmitted, EffectOutcome, Event,
+    Frame, FrameBody, MessageBody, MessageDelivery, MessageOrigin, MessageSender, MessageSlot,
+    Observation, ObservationSelection, Operation, OperationKind, OperationReceived, Reply,
+    RequestUnimplemented, StreamKind, TranscriptDelta, TranscriptLine, TranscriptSequence,
+    TranscriptSnapshot, TranscriptSubscription, TranscriptSubscriptionRetracted, TranscriptToken,
+    UnimplementedReason,
 };
 use signal_frame::{
     ExchangeIdentifier, ExchangeLane, LaneSequence, NonEmpty, Reply as FrameReply, RequestPayload,
     SessionEpoch, StreamEventIdentifier, SubReply, SubscriptionTokenInner,
 };
-use signal_persona_origin::{ConnectionClass, IngressContext};
 
 fn exchange() -> ExchangeIdentifier {
     ExchangeIdentifier::new(
@@ -53,10 +53,9 @@ fn message_delivery() -> MessageDelivery {
         agent: agent(),
         delivery_token: delivery_token(),
         message_slot: MessageSlot::new(42),
-        sender: MessageSender::new("router"),
-        body: MessageBody::new("hello agent"),
-        ingress_context: IngressContext::external(ConnectionClass::Owner),
-        connection_class: ConnectionClass::Owner,
+        sender: MessageSender::new("router".to_owned()),
+        body: MessageBody::new("hello agent".to_owned()),
+        origin: MessageOrigin::External(ConnectionClass::Owner),
     }
 }
 

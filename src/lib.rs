@@ -14,8 +14,7 @@ pub use signal_frame::{
     ExchangeFrameBody as FrameExchangeFrameBody, HandshakeReply, HandshakeRequest, ProtocolVersion,
     Request as FrameRequest, SIGNAL_FRAME_PROTOCOL_VERSION,
 };
-pub use signal_message::{MessageBody, MessageSender, MessageSlot};
-pub use signal_persona_origin::{ConnectionClass, IngressContext};
+pub use signal_message::{ConnectionClass, MessageBody, MessageOrigin, MessageSender, MessageSlot};
 
 /// Stable identity for one logical agent run.
 #[derive(
@@ -104,8 +103,7 @@ pub struct MessageDelivery {
     pub message_slot: MessageSlot,
     pub sender: MessageSender,
     pub body: MessageBody,
-    pub ingress_context: IngressContext,
-    pub connection_class: ConnectionClass,
+    pub origin: MessageOrigin,
 }
 
 /// Retracts one in-flight delivery.

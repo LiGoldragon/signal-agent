@@ -2,7 +2,7 @@
 name         = "signal-agent"
 version      = "0.1.0"
 edition      = "2024"
-rust-version = "1.85"
+rust-version = "1.89"
 license      = "MIT OR Apache-2.0"
 repository   = "https://github.com/LiGoldragon/signal-agent"
 description  = "Ordinary Signal contract for the agent front door."
@@ -12,12 +12,15 @@ publish      = false
 name = "signal_agent"
 path = "src/lib.rs"
 
+[features]
+default = ["nota-text"]
+nota-text = ["dep:nota-next", "signal-frame/nota-text", "signal-message/nota-text"]
+
 [dependencies]
-nota-next = { git = "https://github.com/LiGoldragon/nota-next.git", branch = "main" }
+nota-next = { git = "https://github.com/LiGoldragon/nota-next.git", branch = "main", optional = true }
 rkyv = { version = "0.8", default-features = false, features = ["std", "bytecheck", "little_endian", "pointer_width_32", "unaligned"] }
-signal-frame = { git = "https://github.com/LiGoldragon/signal-frame.git", branch = "main" }
-signal-message = { git = "https://github.com/LiGoldragon/signal-message.git", branch = "main" }
-signal-persona-origin = { git = "https://github.com/LiGoldragon/signal-persona-origin.git", branch = "main" }
+signal-frame = { git = "https://github.com/LiGoldragon/signal-frame.git", branch = "main", default-features = false }
+signal-message = { git = "https://github.com/LiGoldragon/signal-message.git", branch = "main", default-features = false }
 
 [lints.rust]
 unsafe_code = "forbid"

@@ -73,10 +73,14 @@ contract-local operation verbs":
   types that re-derive the text surface.
 - Every operation, reply, event, and public payload shape has an rkyv
   and NOTA round-trip witness in `tests/round_trip.rs`.
-- `IngressContext` / `ConnectionClass` are imported from
-  `signal-persona-origin`; message sender/body/slot records are imported
-  from `signal-message` — this contract does not invent a parallel origin
-  or slot shape.
+- `MessageOrigin` / `ConnectionClass` and the message sender/body/slot
+  records are all imported from `signal-message` — this contract does not
+  invent a parallel origin or slot shape. `MessageDelivery` carries one
+  `origin: MessageOrigin` (external deliveries are
+  `MessageOrigin::External(ConnectionClass)`); the former
+  `signal-persona-origin` `IngressContext` wrapper is gone, and its
+  `MessageOrigin` payload is now the canonical first-party origin type in
+  `signal-message`.
 
 ## Non-ownership
 

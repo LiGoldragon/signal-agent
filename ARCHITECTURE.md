@@ -42,11 +42,13 @@ This crate owns:
 - skeleton honesty: `RequestUnimplemented` with a closed
   `UnimplementedReason`.
 
-It imports `IngressContext` and `ConnectionClass` from `signal-persona-origin`
+It imports `MessageOrigin` and `ConnectionClass` from `signal-message`
 so the front door can carry already-classified ingress provenance without
-inventing a parallel origin shape. It imports message sender, body, and slot
-records from `signal-message` so delivery acknowledgement stays keyed to
-the router/message durable slot vocabulary.
+inventing a parallel origin shape. `MessageDelivery` carries one
+`origin: MessageOrigin`; an external delivery is
+`MessageOrigin::External(ConnectionClass)`. It imports message sender, body,
+and slot records from the same crate so delivery acknowledgement stays keyed
+to the router/message durable slot vocabulary.
 
 ## Not owned
 
