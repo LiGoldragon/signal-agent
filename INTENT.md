@@ -9,18 +9,18 @@ Maintenance: `primary/skills/repo-intent.md`.*
 This file carries only the intent that is FOR this `signal-agent`
 contract. Workspace-shape intent stays in the primary workspace
 `primary/INTENT.md`. Component daemon intent stays in `agent/INTENT.md`.
-Owner-only policy intent stays in `owner-signal-agent/INTENT.md`.
+Meta policy intent stays in `meta-signal-agent/INTENT.md`.
 
 ## Why this repo exists
 
 `signal-agent` is the **ordinary peer-callable wire contract** for the
 `agent` component — the router-facing working signal in the agent triad
-(`agent` runtime, `signal-agent` ordinary contract, `owner-signal-agent`
-owner-only policy contract). It carries the vocabulary for delivering
+(`agent` runtime, `signal-agent` ordinary contract, `meta-signal-agent`
+meta policy contract). It carries the vocabulary for delivering
 one message to one agent, cancelling in-flight deliveries, subscribing
 to a push transcript stream, and observing agent-front-door state.
-Owner-only spawn, retire, backend assignment, and route-toggle policy
-stay in `owner-signal-agent`; runtime actors, the backend registry,
+Meta spawn, retire, backend assignment, and route-toggle policy
+stay in `meta-signal-agent`; runtime actors, the backend registry,
 sockets, storage, and delivery reducers live in `agent`.
 
 ## The channel shape
@@ -44,8 +44,8 @@ A single agent socket is multiplexed by `AgentIdentifier`.
 - Wire enums are closed. No `Unknown` escape hatch.
 - `AgentBackend` is closed: adding a backend is a coordinated contract
   bump.
-- Backend assignment is *observed* here; owner policy *assigns* it in
-  `owner-signal-agent`.
+- Backend assignment is *observed* here; meta policy *assigns* it in
+  `meta-signal-agent`.
 - Transcript observation is push-shaped: snapshot first, then deltas,
   then typed retraction acknowledgement.
 - Request payloads do not mint delivery identity, timestamps, or the
@@ -84,8 +84,8 @@ This crate does not own:
 
 - `agent-daemon` actor topology, redb tables, the backend registry, or
   delivery reducers;
-- owner-only spawn, retire, backend policy, or route-toggle verbs (those
-  live in `owner-signal-agent`);
+- meta spawn, retire, backend policy, or route-toggle verbs (those
+  live in `meta-signal-agent`);
 - backend-private contracts for the individual agent runtimes;
 - router durability state — the router writes the durable `Delivered`
   fact after receiving the agent acknowledgement.
@@ -96,7 +96,7 @@ This crate does not own:
   closed-enum discipline.
 - `../agent/INTENT.md` — daemon-side intent (schema-driven planes,
   actors, state) when it lands.
-- `../owner-signal-agent/INTENT.md` — owner-only policy signal.
+- `../meta-signal-agent/INTENT.md` — meta policy signal.
 - `primary/skills/contract-repo.md` — contract repo discipline and
   naming rules.
 - `primary/skills/component-triad.md` — repo triad structure and wire
