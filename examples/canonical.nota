@@ -1,22 +1,35 @@
-;; Canonical NOTA examples for signal-agent.
+;; Canonical NOTA examples for signal-agent — the ordinary working contract for
+;; the `agent` LLM-call component.
+;;
+;; One example per request, reply, and stream-event variant, in the exact
+;; schema-derived wire form (schema/lib.schema -> schema-rust-next -> generated
+;; Input / Output / AgentEvent). String newtypes (`{ value String }`)
+;; bracket-wrap, so `[deepseek-chat]` not bare `deepseek-chat`. Single-field
+;; payload records flatten through their newtype, so a one-field operation head
+;; carries its inner value directly (`(CancelStream 7)`).
+;;
+;; SCOPE: `agent` calls a configured provider's OpenAI-compatible
+;; /chat/completions endpoint. The guardian asks for the JsonObject output mode
+;; to get a typed verdict back. Provider configuration (endpoint/model/key
+;; handle) lives in meta-signal-agent, not here.
 
-(Send (agent-alpha delivery-0001 42 router [hello agent] (External Owner)))
-(Cancel (agent-alpha delivery-0001))
-(SubscribeTranscript (agent-alpha))
-(TranscriptRetraction (TranscriptToken 7))
-(Observe AllAgents)
-(Tap (All))
-(Untap (ObserverSubscriptionToken 3))
+;; Requests
+;;   Prompt = (system?  transcript  options)
+;;   options = (model?  provider?  temperature_milli?  maximum_output_tokens?  output_mode)
 
-(DeliveryAcknowledged (agent-alpha delivery-0001 42))
-(DeliveryFailed (agent-alpha delivery-0001 42 (BackendUnavailable Claude)))
-(Cancelled (agent-alpha delivery-0001))
-(TranscriptSnapshot (agent-alpha (TranscriptToken 7) 2 [[first line] [second line]]))
-(TranscriptSubscriptionRetracted ((TranscriptToken 7)))
-(Observed (Agent (agent-alpha Claude Running)))
-(RequestUnimplemented (NotBuiltYet))
-(ObserverSubscriptionOpened (ObserverSubscriptionOpened (ObserverSubscriptionToken 5)))
+(Call ((Some [You judge intent.]) [(User [Is this a durable decision?])] ((Some [deepseek-chat]) (Some [deepseek]) (Some 200) (Some 512) JsonObject)))
+(StreamCall ((Some [Stream the judgement.]) [(User [Explain step by step.])] (None (Some [mimo]) None (Some 1024) FreeText)))
+(CancelStream 7)
 
-(TranscriptDelta (agent-alpha (TranscriptToken 7) 3 [third line]))
-(OperationReceived (Send))
-(EffectEmitted ((Assert Asserted)))
+;; Replies
+
+(Completed ([Yes, a durable decision.] [stop] ((Some 41) (Some 12))))
+(CallRejected (NoProviderConfigured [no provider in the registry]))
+(StreamOpened 7)
+(StreamCancelled 7)
+(RequestUnimplemented (StreamCall NotInPrototypeScope))
+
+;; Stream events on CompletionStream (AgentEvent variants)
+
+(TokenStreamDelta (7 1 [Yes]))
+(CompletionStreamDelta (7 [stop] (None None)))

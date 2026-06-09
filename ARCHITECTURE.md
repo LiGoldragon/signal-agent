@@ -1,91 +1,102 @@
 # signal-agent — Architecture
 
-`signal-agent` is the ordinary Signal contract for the `agent`
-front door. It is the router-facing working signal in the `agent` triad:
-`agent` runtime, `signal-agent` ordinary contract, and
+`signal-agent` is the ordinary working Signal contract for the `agent`
+LLM-call component. It is the peer-callable working signal in the `agent`
+triad: `agent` runtime, `signal-agent` ordinary contract, and
 `meta-signal-agent` meta policy contract.
 
-This shape follows
-`/home/li/primary/reports/designer/309-design-agent-component-abstraction.md`
-and the Wave 3 booking in
-`/home/li/primary/reports/designer/310-meta-overhaul-booking-roadmap.md`.
+It is a schema-derived `WireContract` crate: `schema/lib.schema` is the source
+of truth; `schema-rust-next`'s `ContractCrateBuild` emits the freshness-checked
+`src/schema/lib.rs` (wire types + rkyv + NOTA codecs over the
+`signal_frame::StreamingFrame` envelope). The crate carries no engine traits,
+runtime, actors, or `tokio`.
+
+## Scope — LLM API calls, not a harness
+
+Per psyche intent (Spirit `f8k7`, `iucr`), `agent` makes provider HTTP API
+calls in an OpenAI-compatible chat-completions style. It is the LLM-call
+substrate the gated Spirit guardian uses to judge intent. It is NOT an
+agent-harness front door — harness backends (Claude Code / Codex / Pi sessions)
+are deferred and absent from this contract. The earlier message-delivery /
+backend-spawn framing is discarded.
+
+Adding a provider (DeepSeek, MiMo, Kimi, GLM, MiniMax) is configuration in
+`meta-signal-agent` — endpoint + model + key handle — never a change to this
+contract.
 
 ## Boundary
 
-This crate carries four peer-callable relations:
+This crate carries one peer-callable relation: a caller (the gated Spirit
+guardian) asks a configured provider to complete a prompt.
 
-- `Send(MessageDelivery)` — router submits one message to one agent, keyed by
-  `AgentIdentifier` and `DeliveryToken`.
-- `Cancel(DeliveryCancellation)` — router retracts an in-flight delivery by
-  token.
-- `SubscribeTranscript(TranscriptSubscription)` — caller opens a push transcript
-  stream for one agent and receives `TranscriptSnapshot` followed by
-  `TranscriptDelta` events.
-- `Observe(ObservationSelection)` — caller asks for current agent-front-door
-  state, such as one agent's backend and lifecycle.
+- `Call(Call)` — one single-shot completion. Reply: `Completed(Completion)` or
+  `CallRejected(CallRejection)`.
+- `StreamCall(StreamCall)` — the same call, streamed; opens `CompletionStream`.
+  Reply: `StreamOpened(StreamOpening)`; then `TokenStreamDelta` events, then one
+  terminal `CompletionStreamDelta` event carrying stop reason and usage.
+- `CancelStream(CancelStream)` — cancel an open stream by `StreamToken`. Reply:
+  `StreamCancelled(StreamCancellation)`.
 
-The macro-injected `Tap` / `Untap` observer stream exists because this is an
-observable component contract. `Tap` observes operations and contract-owned
-effects; it is not the transcript stream.
+`RequestUnimplemented` is the skeleton-honesty reply for a valid request the
+daemon does not yet serve.
 
 ## Owned vocabulary
 
-This crate owns:
+- prompt vocabulary: `Prompt`, `ChatTranscript`, `ChatMessage`, `ChatRole`
+  (closed: `System` / `User` / `Assistant`), `SystemText`, `UserText`,
+  `PromptOptions`, `OutputMode` (closed: `FreeText` / `JsonObject`), and the
+  call-tuning newtypes `ModelName`, `ProviderName`, `TemperatureMilli`,
+  `MaximumOutputTokens`;
+- completion vocabulary: `Completion`, `CompletionText`, `StopReasonText`,
+  `TokenUsage`, `PromptTokenCount`, `CompletionTokenCount`;
+- streaming vocabulary: `StreamToken`, `StreamOpening`, `StreamCancellation`,
+  `TokenStreamDelta`, `CompletionStreamDelta`, `DeltaSequence`, `TokenDelta`;
+- rejection vocabulary: `CallRejection`, `CallRejectionReason` (closed),
+  `RejectionDetail`;
+- skeleton honesty: `RequestUnimplemented`, `OperationKind`,
+  `UnimplementedReason` (all closed).
 
-- agent identity and backend vocabulary: `AgentIdentifier`, `AgentBackend`;
-- delivery vocabulary: `DeliveryToken`, `MessageDelivery`,
-  `DeliveryAcknowledgement`, `DeliveryFailure`, and cancellation records;
-- transcript vocabulary: `TranscriptToken`, `TranscriptSequence`,
-  `TranscriptSnapshot`, `TranscriptDelta`, and transcript line records;
-- observation vocabulary: `ObservationSelection`, `Observation`,
-  `AgentObservation`, and `AgentLifecycle`;
-- skeleton honesty: `RequestUnimplemented` with a closed
-  `UnimplementedReason`.
-
-It imports `MessageOrigin` and `ConnectionClass` from `signal-message`
-so the front door can carry already-classified ingress provenance without
-inventing a parallel origin shape. `MessageDelivery` carries one
-`origin: MessageOrigin`; an external delivery is
-`MessageOrigin::External(ConnectionClass)`. It imports message sender, body,
-and slot records from the same crate so delivery acknowledgement stays keyed
-to the router/message durable slot vocabulary.
+The output-mode design is load-bearing: the guardian asks for `JsonObject` to
+get a typed structured verdict back; the daemon asks the provider to emit JSON.
 
 ## Not owned
 
-This crate does not own:
-
-- `agent-daemon` actor topology, redb tables, backend registry, or
-  delivery reducers;
-- meta spawn, retire, backend policy, or route-toggle verbs;
-- backend-private contracts for Claude, Codex, Gemini, Pi, OpenCode, or the
-  fixture backend;
-- router durability state. The router writes the durable `Delivered` fact after
-  receiving the agent acknowledgement.
+- `agent` daemon actor topology, the provider registry, redb tables, the HTTPS
+  provider call, or sockets;
+- provider configuration (endpoint / model / key handle) and lifecycle — those
+  live in `meta-signal-agent`;
+- per-provider private wire shapes — providers are a generic
+  OpenAI-compatible API resolved at the daemon, not contract variants.
 
 ## Invariants
 
-- A single agent socket is multiplexed by `AgentIdentifier`.
-- `AgentBackend` is closed: adding a backend is a coordinated contract bump.
-- Backend assignment is observed here; owner policy assigns it elsewhere.
-- Transcript observation is push-shaped: snapshot first, then deltas, then typed
-  retraction acknowledgement.
-- Wire enums contain no `Unknown` escape hatch.
+- Wire enums are closed: no `Unknown` escape hatch. `ChatRole`, `OutputMode`,
+  `CallRejectionReason`, `OperationKind`, `UnimplementedReason` are all closed.
+- The contract names NO concrete provider. A provider is a `ProviderName`
+  string resolved by the daemon's registry, so adding one is configuration.
+- Streaming is push-shaped: `StreamOpened` first, then token deltas, then one
+  terminal completion delta.
+- Request payloads carry no minted identity, timestamps, or durable facts — the
+  daemon mints the `StreamToken` and stamps usage.
 - Runtime code stays out of the contract crate: no actors, sockets, tokio, redb,
-  or backend spawning.
-- Every operation, reply, event, and public payload shape has a NOTA and rkyv
-  round-trip witness in `tests/round_trip.rs`.
+  or HTTP client.
+- Every operation, reply, and event variant has a NOTA and rkyv round-trip
+  witness in `tests/round_trip.rs`.
 
 ## Code map
 
 ```text
-src/lib.rs              payloads plus the signal_channel! declaration
-examples/canonical.nota one canonical NOTA example per operation/reply/event
-tests/round_trip.rs     rkyv frame and NOTA round-trip witnesses
+schema/lib.schema       the source of truth (schema-rust-next grammar)
+src/schema/lib.rs        freshness-checked schema-rust-next artifact (generated)
+src/lib.rs               module entry + hand-written methods on emitted nouns
+build.rs                 ContractCrateBuild -> WireContract emission
+examples/canonical.nota  one canonical NOTA example per operation/reply/event
+tests/round_trip.rs      rkyv frame and NOTA round-trip witnesses
 ```
 
 ## See also
 
 - `/home/li/primary/skills/component-triad.md`
 - `/home/li/primary/skills/contract-repo.md`
-- `/home/li/primary/reports/designer/309-design-agent-component-abstraction.md`
-- `/home/li/primary/reports/designer/310-meta-overhaul-booking-roadmap.md`
+- `../agent/ARCHITECTURE.md` — daemon-side runtime triad and provider call.
+- `../meta-signal-agent/ARCHITECTURE.md` — provider configuration + lifecycle.

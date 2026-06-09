@@ -1,19 +1,19 @@
-use std::fmt::Debug;
+//! Architectural-truth round-trip tests for the schema-derived `signal-agent`
+//! contract. Each request, reply, and stream-event variant round-trips through
+//! the `signal_frame::StreamingFrame` envelope (rkyv) and through NOTA text.
 
 use nota_next::{NotaDecode, NotaEncode, NotaSource};
 use signal_agent::{
-    AgentBackend, AgentIdentifier, AgentLifecycle, AgentObservation, ConnectionClass,
-    DeliveryAcknowledgement, DeliveryCancellation, DeliveryCancellationAcknowledgement,
-    DeliveryFailure, DeliveryFailureReason, DeliveryToken, EffectEmitted, EffectOutcome, Event,
-    Frame, FrameBody, MessageBody, MessageDelivery, MessageOrigin, MessageSender, MessageSlot,
-    Observation, ObservationSelection, Operation, OperationKind, OperationReceived, Reply,
-    RequestUnimplemented, StreamKind, TranscriptDelta, TranscriptLine, TranscriptSequence,
-    TranscriptSnapshot, TranscriptSubscription, TranscriptSubscriptionRetracted, TranscriptToken,
-    UnimplementedReason,
+    AgentEvent, Call, CallRejection, CallRejectionReason, CancelStream, ChatMessage, ChatRole,
+    ChatTranscript, Completion, CompletionStreamDelta, CompletionText, DeltaSequence, Frame,
+    FrameBody, Input, MaximumOutputTokens, ModelName, OperationKind, Output, OutputMode, Prompt,
+    PromptOptions, ProviderName, RejectionDetail, RequestUnimplemented, StopReasonText, StreamCall,
+    StreamCancellation, StreamOpening, StreamToken, SystemText, TemperatureMilli, TokenDelta,
+    TokenStreamDelta, TokenUsage, UnimplementedReason, UserText,
 };
 use signal_frame::{
-    ExchangeIdentifier, ExchangeLane, LaneSequence, NonEmpty, Reply as FrameReply, RequestPayload,
-    SessionEpoch, StreamEventIdentifier, SubReply, SubscriptionTokenInner,
+    ExchangeIdentifier, ExchangeLane, LaneSequence, NonEmpty, Reply, SessionEpoch,
+    StreamEventIdentifier, SubReply, SubscriptionTokenInner,
 };
 
 fn exchange() -> ExchangeIdentifier {
@@ -24,7 +24,7 @@ fn exchange() -> ExchangeIdentifier {
     )
 }
 
-fn event_identifier() -> StreamEventIdentifier {
+fn stream_event() -> StreamEventIdentifier {
     StreamEventIdentifier::new(
         SessionEpoch::new(1),
         ExchangeLane::Acceptor,
@@ -32,299 +32,172 @@ fn event_identifier() -> StreamEventIdentifier {
     )
 }
 
-fn completed_reply(payload: Reply) -> FrameReply<Reply> {
-    FrameReply::committed(NonEmpty::single(SubReply::Ok(payload)))
-}
-
-fn agent() -> AgentIdentifier {
-    AgentIdentifier::new("agent-alpha")
-}
-
-fn delivery_token() -> DeliveryToken {
-    DeliveryToken::new("delivery-0001")
-}
-
-fn transcript_token() -> TranscriptToken {
-    TranscriptToken::new(SubscriptionTokenInner::new(7))
-}
-
-fn message_delivery() -> MessageDelivery {
-    MessageDelivery {
-        agent: agent(),
-        delivery_token: delivery_token(),
-        message_slot: MessageSlot::new(42),
-        sender: MessageSender::new("router".to_owned()),
-        body: MessageBody::new("hello agent".to_owned()),
-        origin: MessageOrigin::External(ConnectionClass::Owner),
+fn guardian_prompt() -> Prompt {
+    Prompt {
+        system: Some(SystemText::new("You judge intent.".to_owned())),
+        transcript: ChatTranscript::new(vec![
+            ChatMessage::user("Is this a durable decision?"),
+            ChatMessage::assistant("Considering."),
+        ]),
+        options: PromptOptions {
+            model: Some(ModelName::new("deepseek-chat".to_owned())),
+            provider: Some(ProviderName::new("deepseek".to_owned())),
+            temperature_milli: Some(TemperatureMilli::new(200)),
+            maximum_output_tokens: Some(MaximumOutputTokens::new(512)),
+            output_mode: OutputMode::JsonObject,
+        },
     }
 }
 
-fn transcript_snapshot() -> TranscriptSnapshot {
-    TranscriptSnapshot {
-        agent: agent(),
-        token: transcript_token(),
-        current_sequence: TranscriptSequence::new(2),
-        lines: vec![
-            TranscriptLine::new("first line"),
-            TranscriptLine::new("second line"),
-        ],
+fn usage() -> TokenUsage {
+    TokenUsage {
+        prompt_tokens: None,
+        completion_tokens: None,
     }
 }
 
-fn observation() -> Observation {
-    Observation::Agent(AgentObservation {
-        agent: agent(),
-        backend: AgentBackend::Claude,
-        lifecycle: AgentLifecycle::Running,
-    })
-}
-
-fn effect_emitted() -> EffectEmitted {
-    EffectEmitted {
-        operation: OperationKind::Send,
-        outcome: EffectOutcome::Delivered,
-    }
-}
-
-fn round_trip_operation(operation: Operation) -> Operation {
-    let frame = Frame::new(FrameBody::Request {
-        exchange: exchange(),
-        request: operation.clone().into_request(),
-    });
-    let bytes = frame.encode_length_prefixed().expect("encode operation");
-    let decoded = Frame::decode_length_prefixed(&bytes).expect("decode operation");
-
+fn round_trip_request(request: Input) -> Input {
+    let expected = request.clone();
+    let frame = request.into_frame(exchange());
+    let bytes = frame.encode_length_prefixed().expect("encode");
+    let decoded = Frame::decode_length_prefixed(&bytes).expect("decode");
     match decoded.into_body() {
-        FrameBody::Request { request, .. } => request.payloads().head().clone(),
-        other => panic!("expected request, got {other:?}"),
+        FrameBody::Request { request, .. } => {
+            assert_eq!(request.payloads().head(), &expected);
+            request.payloads().head().clone()
+        }
+        other => panic!("expected request operation, got {other:?}"),
     }
 }
 
-fn round_trip_reply(reply: Reply) -> Reply {
+fn round_trip_reply(reply: Output) -> Output {
     let frame = Frame::new(FrameBody::Reply {
         exchange: exchange(),
-        reply: completed_reply(reply.clone()),
+        reply: Reply::committed(NonEmpty::single(SubReply::Ok(reply))),
     });
-    let bytes = frame.encode_length_prefixed().expect("encode reply");
-    let decoded = Frame::decode_length_prefixed(&bytes).expect("decode reply");
-
+    let bytes = frame.encode_length_prefixed().expect("encode");
+    let decoded = Frame::decode_length_prefixed(&bytes).expect("decode");
     match decoded.into_body() {
         FrameBody::Reply { reply, .. } => match reply {
-            FrameReply::Accepted { per_operation, .. } => match per_operation.into_head() {
+            Reply::Accepted { per_operation, .. } => match per_operation.into_head() {
                 SubReply::Ok(payload) => payload,
                 other => panic!("expected accepted reply payload, got {other:?}"),
             },
             other => panic!("expected accepted reply, got {other:?}"),
         },
-        other => panic!("expected reply, got {other:?}"),
+        other => panic!("expected reply operation, got {other:?}"),
     }
 }
 
-fn round_trip_event(event: Event) -> Event {
-    let frame = Frame::new(FrameBody::SubscriptionEvent {
-        event_identifier: event_identifier(),
-        token: SubscriptionTokenInner::new(11),
-        event: event.clone(),
-    });
-    let bytes = frame.encode_length_prefixed().expect("encode event");
-    let decoded = Frame::decode_length_prefixed(&bytes).expect("decode event");
-
+fn round_trip_event(event: AgentEvent) -> AgentEvent {
+    let frame = event.into_subscription_frame(stream_event(), SubscriptionTokenInner::new(1));
+    let bytes = frame.encode_length_prefixed().expect("encode");
+    let decoded = Frame::decode_length_prefixed(&bytes).expect("decode");
     match decoded.into_body() {
         FrameBody::SubscriptionEvent { event, .. } => event,
         other => panic!("expected subscription event, got {other:?}"),
     }
 }
 
-fn round_trip_nota<T>(value: T) -> String
+fn round_trip_nota<T>(value: T, expected: &str)
 where
-    T: NotaEncode + NotaDecode + PartialEq + Debug,
+    T: NotaEncode + NotaDecode + PartialEq + std::fmt::Debug,
 {
-    let text = value.to_nota();
-    let recovered = NotaSource::new(&text).parse::<T>().expect("decode nota");
+    let encoded = value.to_nota();
+    assert_eq!(encoded, expected);
+    let recovered = NotaSource::new(&encoded)
+        .parse::<T>()
+        .expect("decode nota text");
     assert_eq!(recovered, value);
-    text
 }
 
 #[test]
-fn operations_round_trip_through_length_prefixed_frames() {
-    let operations = [
-        Operation::Send(message_delivery()),
-        Operation::Cancel(DeliveryCancellation {
-            agent: agent(),
-            token: delivery_token(),
-        }),
-        Operation::SubscribeTranscript(TranscriptSubscription { agent: agent() }),
-        Operation::TranscriptRetraction(transcript_token()),
-        Operation::Observe(ObservationSelection::Agent(agent())),
-        Operation::Tap(signal_agent::ObserverFilter::All),
-        Operation::Untap(signal_agent::ObserverSubscriptionToken::new(
-            SubscriptionTokenInner::new(3),
-        )),
+fn every_request_round_trips_through_streaming_frame() {
+    let requests = [
+        Input::Call(Call::new(guardian_prompt())),
+        Input::StreamCall(StreamCall::new(guardian_prompt())),
+        Input::CancelStream(CancelStream::new(StreamToken::new(7))),
     ];
-
-    for operation in operations {
-        assert_eq!(round_trip_operation(operation.clone()), operation);
+    for request in requests {
+        assert_eq!(round_trip_request(request.clone()), request);
     }
 }
 
 #[test]
-fn replies_round_trip_through_length_prefixed_frames() {
+fn every_reply_round_trips_through_streaming_frame() {
     let replies = [
-        Reply::DeliveryAcknowledged(DeliveryAcknowledgement {
-            agent: agent(),
-            token: delivery_token(),
-            message_slot: MessageSlot::new(42),
+        Output::Completed(Completion {
+            text: CompletionText::new("Yes, durable.".to_owned()),
+            stop_reason: StopReasonText::new("stop".to_owned()),
+            usage: usage(),
         }),
-        Reply::DeliveryFailed(DeliveryFailure {
-            agent: agent(),
-            token: delivery_token(),
-            message_slot: MessageSlot::new(42),
-            reason: DeliveryFailureReason::BackendUnavailable(AgentBackend::Claude),
+        Output::CallRejected(CallRejection {
+            reason: CallRejectionReason::NoProviderConfigured,
+            detail: RejectionDetail::new("no provider in registry".to_owned()),
         }),
-        Reply::Cancelled(DeliveryCancellationAcknowledgement {
-            agent: agent(),
-            token: delivery_token(),
+        Output::StreamOpened(StreamOpening::new(StreamToken::new(7))),
+        Output::StreamCancelled(StreamCancellation::new(StreamToken::new(7))),
+        Output::RequestUnimplemented(RequestUnimplemented {
+            operation: OperationKind::StreamCall,
+            reason: UnimplementedReason::NotInPrototypeScope,
         }),
-        Reply::TranscriptSnapshot(transcript_snapshot()),
-        Reply::TranscriptSubscriptionRetracted(TranscriptSubscriptionRetracted {
-            token: transcript_token(),
-        }),
-        Reply::Observed(observation()),
-        Reply::RequestUnimplemented(RequestUnimplemented {
-            reason: UnimplementedReason::NotBuiltYet,
-        }),
-        Reply::ObserverSubscriptionOpened(signal_agent::ObserverSubscriptionOpened::new(
-            signal_agent::ObserverSubscriptionToken::new(SubscriptionTokenInner::new(5)),
-        )),
     ];
-
     for reply in replies {
         assert_eq!(round_trip_reply(reply.clone()), reply);
     }
 }
 
 #[test]
-fn events_round_trip_through_length_prefixed_frames() {
+fn stream_events_round_trip_through_subscription_frame() {
     let events = [
-        Event::TranscriptDelta(TranscriptDelta {
-            agent: agent(),
-            token: transcript_token(),
-            sequence: TranscriptSequence::new(3),
-            line: TranscriptLine::new("third line"),
+        AgentEvent::TokenStreamDelta(TokenStreamDelta {
+            token: StreamToken::new(7),
+            sequence: DeltaSequence::new(1),
+            delta: TokenDelta::new("Yes".to_owned()),
         }),
-        Event::OperationReceived(OperationReceived {
-            operation: OperationKind::Send,
+        AgentEvent::CompletionStreamDelta(CompletionStreamDelta {
+            token: StreamToken::new(7),
+            stop_reason: StopReasonText::new("stop".to_owned()),
+            usage: usage(),
         }),
-        Event::EffectEmitted(effect_emitted()),
     ];
-
     for event in events {
         assert_eq!(round_trip_event(event.clone()), event);
     }
 }
 
 #[test]
-fn public_payloads_round_trip_through_nota_text() {
+fn input_exposes_contract_owned_operation_kind() {
     assert_eq!(
-        round_trip_nota(AgentIdentifier::new("agent-alpha")),
-        "[agent-alpha]"
+        Input::Call(Call::new(guardian_prompt())).operation_kind(),
+        OperationKind::Call
     );
-    assert_eq!(round_trip_nota(AgentBackend::Claude), "Claude");
-    assert_eq!(round_trip_nota(AgentBackend::OpenCode), "OpenCode");
     assert_eq!(
-        round_trip_nota(DeliveryToken::new("delivery-0001")),
-        "[delivery-0001]"
+        Input::CancelStream(CancelStream::new(StreamToken::new(1))).operation_kind(),
+        OperationKind::CancelStream
     );
-    assert_eq!(round_trip_nota(transcript_token()), "(TranscriptToken 7)");
-
-    round_trip_nota(message_delivery());
-    round_trip_nota(transcript_snapshot());
-    round_trip_nota(TranscriptDelta {
-        agent: agent(),
-        token: transcript_token(),
-        sequence: TranscriptSequence::new(3),
-        line: TranscriptLine::new("third line"),
-    });
-    round_trip_nota(DeliveryAcknowledgement {
-        agent: agent(),
-        token: delivery_token(),
-        message_slot: MessageSlot::new(42),
-    });
-    round_trip_nota(DeliveryFailure {
-        agent: agent(),
-        token: delivery_token(),
-        message_slot: MessageSlot::new(42),
-        reason: DeliveryFailureReason::AcknowledgementChainBroken(
-            signal_agent::AcknowledgementHop::BackendDaemon,
-        ),
-    });
-    round_trip_nota(RequestUnimplemented {
-        reason: UnimplementedReason::NotBuiltYet,
-    });
 }
 
 #[test]
-fn public_payloads_round_trip_through_rkyv_archives() {
-    let backend = AgentBackend::Fixture;
-    let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&backend).expect("archive backend");
-    let recovered =
-        rkyv::from_bytes::<AgentBackend, rkyv::rancor::Error>(&bytes).expect("decode backend");
-    assert_eq!(recovered, backend);
-
-    let delivery = message_delivery();
-    let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&delivery).expect("archive delivery");
-    let recovered =
-        rkyv::from_bytes::<MessageDelivery, rkyv::rancor::Error>(&bytes).expect("decode delivery");
-    assert_eq!(recovered, delivery);
-
-    let snapshot = transcript_snapshot();
-    let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&snapshot).expect("archive snapshot");
-    let recovered = rkyv::from_bytes::<TranscriptSnapshot, rkyv::rancor::Error>(&bytes)
-        .expect("decode snapshot");
-    assert_eq!(recovered, snapshot);
-}
-
-#[test]
-fn operation_kind_and_stream_witnesses_are_generated_by_macro() {
-    let send = Operation::Send(message_delivery());
-    assert_eq!(send.kind(), OperationKind::Send);
-    assert_eq!(send.opened_stream(), None);
-    assert_eq!(send.closed_stream(), None);
-
-    let subscribe = Operation::SubscribeTranscript(TranscriptSubscription { agent: agent() });
-    assert_eq!(subscribe.kind(), OperationKind::SubscribeTranscript);
-    assert_eq!(
-        subscribe.opened_stream(),
-        Some(StreamKind::TranscriptStream)
+fn chat_role_and_output_mode_round_trip_through_nota_text() {
+    round_trip_nota(ChatRole::Assistant, "Assistant");
+    round_trip_nota(OutputMode::JsonObject, "JsonObject");
+    round_trip_nota(
+        ChatMessage {
+            role: ChatRole::User,
+            text: UserText::new("hello".to_owned()),
+        },
+        "(User [hello])",
     );
-
-    let close = Operation::TranscriptRetraction(transcript_token());
-    assert_eq!(close.kind(), OperationKind::TranscriptRetraction);
-    assert_eq!(close.closed_stream(), Some(StreamKind::TranscriptStream));
-
-    let tap = Operation::Tap(signal_agent::ObserverFilter::OperationsOnly);
-    assert_eq!(tap.kind(), OperationKind::Tap);
-    assert_eq!(tap.opened_stream(), Some(StreamKind::ObserverStream));
-
-    let event = Event::TranscriptDelta(TranscriptDelta {
-        agent: agent(),
-        token: transcript_token(),
-        sequence: TranscriptSequence::new(3),
-        line: TranscriptLine::new("third line"),
-    });
-    assert_eq!(event.stream_kind(), StreamKind::TranscriptStream);
 }
 
 #[test]
-fn operation_and_reply_variants_round_trip_through_nota_text() {
-    let request_text = round_trip_nota(Operation::Observe(ObservationSelection::AllAgents));
-    assert_eq!(request_text, "(Observe AllAgents)");
-
-    let reply_text = round_trip_nota(Reply::RequestUnimplemented(RequestUnimplemented {
-        reason: UnimplementedReason::NotBuiltYet,
-    }));
-    assert_eq!(reply_text, "(RequestUnimplemented (NotBuiltYet))");
-
-    let tap_text = round_trip_nota(Operation::Tap(signal_agent::ObserverFilter::EffectsOnly));
-    assert_eq!(tap_text, "(Tap EffectsOnly)");
+fn call_rejection_round_trips_through_nota_text() {
+    round_trip_nota(
+        Output::CallRejected(CallRejection {
+            reason: CallRejectionReason::ProviderUnreachable,
+            detail: RejectionDetail::new("connection refused".to_owned()),
+        }),
+        "(CallRejected (ProviderUnreachable [connection refused]))",
+    );
 }

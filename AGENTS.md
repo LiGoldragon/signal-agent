@@ -1,11 +1,15 @@
 # signal-agent agent notes
 
-You MUST read `/home/li/primary/AGENTS.md` first.
+You MUST read `/home/li/primary/AGENTS.md` first, then this repo's `INTENT.md`
+and `ARCHITECTURE.md`.
 
-This repository is the ordinary typed contract for the agent front door
-from `/home/li/primary/reports/designer/309-design-agent-component-abstraction.md`
-and the Wave 3 booking in
-`/home/li/primary/reports/designer/310-meta-overhaul-booking-roadmap.md`.
-Keep daemon behavior, actors, storage, backend spawning, and CLI surface policy
-out of this crate. This crate owns only the wire vocabulary and its NOTA/rkyv
-round-trip witnesses.
+This repository is the ordinary schema-derived wire contract for the `agent`
+LLM-call component — the single-shot + streaming provider-call surface. `agent`
+makes OpenAI-compatible provider HTTP API calls; it is NOT an agent harness
+(psyche Spirit `iucr`, `f8k7`).
+
+Keep daemon behaviour, actors, storage, the provider registry, the HTTPS call,
+and CLI surface policy out of this crate. This crate owns only the wire
+vocabulary and its NOTA/rkyv round-trip witnesses. Edit `schema/lib.schema` and
+regenerate (`SIGNAL_AGENT_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`); never
+hand-edit `src/schema/lib.rs`.

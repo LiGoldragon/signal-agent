@@ -1,0 +1,114 @@
+;; signal-agent — ordinary working wire contract for the `agent` LLM-call component.
+;;
+;; Wire-only: schema-emitted Input/Output/Event roots + rkyv + optional NOTA codec on the
+;; signal-frame streaming envelope. Runtime, the provider registry, the HTTPS provider call,
+;; storage, and sockets live in the `agent` daemon, never here.
+;;
+;; SCOPE (psyche f8k7, iucr): `agent` is an LLM-API-call component. It makes provider HTTP
+;; API calls in an OpenAI-compatible chat-completions style. It is NOT an agent-harness front
+;; door — harness backends (Claude Code / Codex / Pi sessions) are deferred and absent here.
+;;
+;; The ordinary contract is the single-shot + streaming call surface a peer (the gated Spirit
+;; guardian) uses to ask a configured provider to complete a prompt. Adding a provider is pure
+;; configuration in `meta-signal-agent` (endpoint + model + key handle) — never a change here.
+
+{}
+
+[(Call Call)
+ (StreamCall StreamCall opens CompletionStream)
+ (CancelStream CancelStream)]
+[(Completed Completion)
+ (CallRejected CallRejection)
+ (StreamOpened StreamOpening)
+ (StreamCancelled StreamCancellation)
+ (RequestUnimplemented RequestUnimplemented)
+ (Event AgentEvent)]
+{
+  SystemText { value String }
+  UserText { value String }
+  AssistantText { value String }
+  ModelName { value String }
+  ProviderName { value String }
+  StreamToken { value Integer }
+  TokenDelta { value String }
+  DeltaSequence { value Integer }
+  TemperatureMilli { value Integer }
+  MaximumOutputTokens { value Integer }
+  CompletionText { value String }
+  StopReasonText { value String }
+  PromptTokenCount { value Integer }
+  CompletionTokenCount { value Integer }
+  RejectionDetail { value String }
+
+  ;; A turn in the chat transcript. Closed roles; no free-form string role.
+  ChatRole [System User Assistant]
+  ChatMessage { role ChatRole text UserText }
+  ChatTranscript { messages (Vec ChatMessage) }
+
+  ;; The output shaping the guardian wants: free-form text, or a structured/JSON
+  ;; verdict the daemon asks the provider to emit in JSON mode. The schema names the
+  ;; structured shape so the guardian gets a typed verdict back, not a raw blob.
+  OutputMode [FreeText JsonObject]
+
+  PromptOptions {
+    model (Optional ModelName)
+    provider (Optional ProviderName)
+    temperature_milli (Optional TemperatureMilli)
+    maximum_output_tokens (Optional MaximumOutputTokens)
+    output_mode OutputMode
+  }
+
+  ;; A Prompt carries a system message, the user transcript, and call options. The
+  ;; system text is optional because some providers reject an empty system turn.
+  Prompt {
+    system (Optional SystemText)
+    transcript ChatTranscript
+    options PromptOptions
+  }
+
+  TokenUsage {
+    prompt_tokens (Optional PromptTokenCount)
+    completion_tokens (Optional CompletionTokenCount)
+  }
+
+  ;; One single-shot call.
+  Call { prompt Prompt }
+  ;; The same call, streamed: the daemon pushes TokenDelta events on the opened
+  ;; CompletionStream, then a terminal CompletionDelta with stop reason.
+  StreamCall { prompt Prompt }
+  CancelStream { token StreamToken }
+
+  ;; The single-shot reply.
+  Completion {
+    text CompletionText
+    stop_reason StopReasonText
+    usage TokenUsage
+  }
+
+  CallRejectionReason [
+    NoProviderConfigured
+    ProviderUnreachable
+    ProviderRejected
+    OutputModeUnsupported
+    DaemonUnconfigured
+  ]
+  CallRejection { reason CallRejectionReason detail RejectionDetail }
+
+  StreamOpening { token StreamToken }
+  StreamCancellation { token StreamToken }
+
+  OperationKind [Call StreamCall CancelStream]
+  UnimplementedReason [NotInPrototypeScope]
+  RequestUnimplemented { operation OperationKind reason UnimplementedReason }
+
+  ;; Stream events on CompletionStream: token deltas, then one terminal delta that
+  ;; closes the transcript with the stop reason and usage.
+  TokenStreamDelta { token StreamToken sequence DeltaSequence delta TokenDelta }
+  CompletionStreamDelta { token StreamToken stop_reason StopReasonText usage TokenUsage }
+
+  AgentEvent [
+    (TokenStreamDelta TokenStreamDelta belongs CompletionStream)
+    (CompletionStreamDelta CompletionStreamDelta belongs CompletionStream)
+  ]
+  CompletionStream (Stream { token StreamToken opened StreamOpening event AgentEvent close StreamToken })
+}

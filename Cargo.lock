@@ -284,12 +284,13 @@ dependencies = [
 
 [[package]]
 name = "signal-agent"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "nota-next",
  "rkyv",
+ "schema-rust-next",
  "signal-frame",
- "signal-message",
+ "thiserror",
 ]
 
 [[package]]
@@ -312,18 +313,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "signal-message"
-version = "0.2.0"
-source = "git+https://github.com/LiGoldragon/signal-message.git?branch=main#6a29eb1999f35a1f0d0c60ebe2cade3a5eee2d59"
-dependencies = [
- "nota-next",
- "rkyv",
- "schema-rust-next",
- "signal-frame",
- "thiserror",
 ]
 
 [[package]]
