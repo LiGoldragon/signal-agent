@@ -133,7 +133,7 @@ pub struct ChatTranscript(pub Vec<ChatMessage>);
 )]
 pub enum OutputMode {
     FreeText,
-    JsonObject,
+    Nota,
 }
 
 #[rustfmt::skip]
@@ -205,6 +205,7 @@ pub enum CallRejectionReason {
     ProviderUnreachable,
     ProviderRejected,
     OutputModeUnsupported,
+    InvalidNotaOutput,
     DaemonUnconfigured,
 }
 

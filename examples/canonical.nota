@@ -9,7 +9,7 @@
 ;; carries its inner value directly (`(CancelStream 7)`).
 ;;
 ;; SCOPE: `agent` calls a configured provider's OpenAI-compatible
-;; /chat/completions endpoint. The guardian asks for the JsonObject output mode
+;; /chat/completions endpoint. The guardian asks for the Nota output mode
 ;; to get a typed verdict back. Provider configuration (endpoint/model/key
 ;; handle) lives in meta-signal-agent, not here.
 
@@ -17,7 +17,7 @@
 ;;   Prompt = (system?  transcript  options)
 ;;   options = (model?  provider?  temperature_milli?  maximum_output_tokens?  output_mode)
 
-(Call ((Some [You judge intent.]) [(User [Is this a durable decision?])] ((Some [deepseek-chat]) (Some [deepseek]) (Some 200) (Some 512) JsonObject)))
+(Call ((Some [You judge intent.]) [(User [Is this a durable decision?])] ((Some [deepseek-chat]) (Some [deepseek]) (Some 200) (Some 512) Nota)))
 (StreamCall ((Some [Stream the judgement.]) [(User [Explain step by step.])] (None (Some [mimo]) None (Some 1024) FreeText)))
 (CancelStream 7)
 

@@ -45,10 +45,11 @@
   ChatMessage { role ChatRole text UserText }
   ChatTranscript { messages (Vec ChatMessage) }
 
-  ;; The output shaping the guardian wants: free-form text, or a structured/JSON
-  ;; verdict the daemon asks the provider to emit in JSON mode. The schema names the
-  ;; structured shape so the guardian gets a typed verdict back, not a raw blob.
-  OutputMode [FreeText JsonObject]
+  ;; The output shaping the guardian wants: free-form text, or a NOTA response —
+  ;; the model emits one valid NOTA expression directly (no JSON translation). The
+  ;; daemon injects a NOTA instruction, validates the completion parses as NOTA,
+  ;; and retries once before rejecting, so the guardian gets a typed NOTA verdict.
+  OutputMode [FreeText Nota]
 
   PromptOptions {
     model (Optional ModelName)
@@ -90,6 +91,7 @@
     ProviderUnreachable
     ProviderRejected
     OutputModeUnsupported
+    InvalidNotaOutput
     DaemonUnconfigured
   ]
   CallRejection { reason CallRejectionReason detail RejectionDetail }

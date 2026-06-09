@@ -44,7 +44,7 @@ fn guardian_prompt() -> Prompt {
             provider: Some(ProviderName::new("deepseek".to_owned())),
             temperature_milli: Some(TemperatureMilli::new(200)),
             maximum_output_tokens: Some(MaximumOutputTokens::new(512)),
-            output_mode: OutputMode::JsonObject,
+            output_mode: OutputMode::Nota,
         },
     }
 }
@@ -181,7 +181,7 @@ fn input_exposes_contract_owned_operation_kind() {
 #[test]
 fn chat_role_and_output_mode_round_trip_through_nota_text() {
     round_trip_nota(ChatRole::Assistant, "Assistant");
-    round_trip_nota(OutputMode::JsonObject, "JsonObject");
+    round_trip_nota(OutputMode::Nota, "Nota");
     round_trip_nota(
         ChatMessage {
             role: ChatRole::User,

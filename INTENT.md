@@ -50,7 +50,7 @@ resolves; adding DeepSeek, MiMo, Kimi, GLM, or MiniMax is configuration in
 
 A `Prompt` carries an optional system message, a chat transcript, and call
 options (model, provider, temperature, max output tokens, output mode). The
-guardian wants a structured verdict back, so `OutputMode::JsonObject` asks the
+guardian wants a structured verdict back, so `OutputMode::Nota` asks the
 daemon to request JSON output from the provider.
 
 ## Constraints

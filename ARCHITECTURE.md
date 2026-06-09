@@ -44,7 +44,7 @@ daemon does not yet serve.
 
 - prompt vocabulary: `Prompt`, `ChatTranscript`, `ChatMessage`, `ChatRole`
   (closed: `System` / `User` / `Assistant`), `SystemText`, `UserText`,
-  `PromptOptions`, `OutputMode` (closed: `FreeText` / `JsonObject`), and the
+  `PromptOptions`, `OutputMode` (closed: `FreeText` / `Nota`), and the
   call-tuning newtypes `ModelName`, `ProviderName`, `TemperatureMilli`,
   `MaximumOutputTokens`;
 - completion vocabulary: `Completion`, `CompletionText`, `StopReasonText`,
@@ -56,7 +56,7 @@ daemon does not yet serve.
 - skeleton honesty: `RequestUnimplemented`, `OperationKind`,
   `UnimplementedReason` (all closed).
 
-The output-mode design is load-bearing: the guardian asks for `JsonObject` to
+The output-mode design is load-bearing: the guardian asks for `Nota` to
 get a typed structured verdict back; the daemon asks the provider to emit JSON.
 
 ## Not owned
