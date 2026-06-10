@@ -16,77 +16,77 @@ pub use nota_next::{NotaDecode, NotaDecodeError, NotaEncode, NotaSource};
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct SystemText(pub String);
+pub struct SystemText(String);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct UserText(pub String);
+pub struct UserText(String);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct AssistantText(pub String);
+pub struct AssistantText(String);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct ModelName(pub String);
+pub struct ModelName(String);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct ProviderName(pub String);
+pub struct ProviderName(String);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct StreamToken(pub Integer);
+pub struct StreamToken(Integer);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct TokenDelta(pub String);
+pub struct TokenDelta(String);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct DeltaSequence(pub Integer);
+pub struct DeltaSequence(Integer);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct TemperatureMilli(pub Integer);
+pub struct TemperatureMilli(Integer);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct MaximumOutputTokens(pub Integer);
+pub struct MaximumOutputTokens(Integer);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct CompletionText(pub String);
+pub struct CompletionText(String);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct StopReasonText(pub String);
+pub struct StopReasonText(String);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct PromptTokenCount(pub Integer);
+pub struct PromptTokenCount(Integer);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct CompletionTokenCount(pub Integer);
+pub struct CompletionTokenCount(Integer);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct RejectionDetail(pub String);
+pub struct RejectionDetail(String);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
@@ -117,7 +117,7 @@ pub struct ChatMessage {
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct ChatTranscript(pub Vec<ChatMessage>);
+pub struct ChatTranscript(Vec<ChatMessage>);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
@@ -167,17 +167,17 @@ pub struct TokenUsage {
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct Call(pub Prompt);
+pub struct Call(Prompt);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct StreamCall(pub Prompt);
+pub struct StreamCall(Prompt);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct CancelStream(pub StreamToken);
+pub struct CancelStream(StreamToken);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
@@ -220,12 +220,12 @@ pub struct CallRejection {
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct StreamOpening(pub StreamToken);
+pub struct StreamOpening(StreamToken);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct StreamCancellation(pub StreamToken);
+pub struct StreamCancellation(StreamToken);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
@@ -318,8 +318,8 @@ pub enum Output {
 
 #[rustfmt::skip]
 impl SystemText {
-    pub fn new(payload: String) -> Self {
-        Self(payload)
+    pub fn new(payload: impl Into<String>) -> Self {
+        Self(payload.into())
     }
     pub fn payload(&self) -> &String {
         &self.0
@@ -337,8 +337,8 @@ impl From<String> for SystemText {
 
 #[rustfmt::skip]
 impl UserText {
-    pub fn new(payload: String) -> Self {
-        Self(payload)
+    pub fn new(payload: impl Into<String>) -> Self {
+        Self(payload.into())
     }
     pub fn payload(&self) -> &String {
         &self.0
@@ -356,8 +356,8 @@ impl From<String> for UserText {
 
 #[rustfmt::skip]
 impl AssistantText {
-    pub fn new(payload: String) -> Self {
-        Self(payload)
+    pub fn new(payload: impl Into<String>) -> Self {
+        Self(payload.into())
     }
     pub fn payload(&self) -> &String {
         &self.0
@@ -375,8 +375,8 @@ impl From<String> for AssistantText {
 
 #[rustfmt::skip]
 impl ModelName {
-    pub fn new(payload: String) -> Self {
-        Self(payload)
+    pub fn new(payload: impl Into<String>) -> Self {
+        Self(payload.into())
     }
     pub fn payload(&self) -> &String {
         &self.0
@@ -394,8 +394,8 @@ impl From<String> for ModelName {
 
 #[rustfmt::skip]
 impl ProviderName {
-    pub fn new(payload: String) -> Self {
-        Self(payload)
+    pub fn new(payload: impl Into<String>) -> Self {
+        Self(payload.into())
     }
     pub fn payload(&self) -> &String {
         &self.0
@@ -432,8 +432,8 @@ impl From<Integer> for StreamToken {
 
 #[rustfmt::skip]
 impl TokenDelta {
-    pub fn new(payload: String) -> Self {
-        Self(payload)
+    pub fn new(payload: impl Into<String>) -> Self {
+        Self(payload.into())
     }
     pub fn payload(&self) -> &String {
         &self.0
@@ -508,8 +508,8 @@ impl From<Integer> for MaximumOutputTokens {
 
 #[rustfmt::skip]
 impl CompletionText {
-    pub fn new(payload: String) -> Self {
-        Self(payload)
+    pub fn new(payload: impl Into<String>) -> Self {
+        Self(payload.into())
     }
     pub fn payload(&self) -> &String {
         &self.0
@@ -527,8 +527,8 @@ impl From<String> for CompletionText {
 
 #[rustfmt::skip]
 impl StopReasonText {
-    pub fn new(payload: String) -> Self {
-        Self(payload)
+    pub fn new(payload: impl Into<String>) -> Self {
+        Self(payload.into())
     }
     pub fn payload(&self) -> &String {
         &self.0
@@ -584,8 +584,8 @@ impl From<Integer> for CompletionTokenCount {
 
 #[rustfmt::skip]
 impl RejectionDetail {
-    pub fn new(payload: String) -> Self {
-        Self(payload)
+    pub fn new(payload: impl Into<String>) -> Self {
+        Self(payload.into())
     }
     pub fn payload(&self) -> &String {
         &self.0

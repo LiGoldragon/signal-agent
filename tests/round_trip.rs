@@ -187,7 +187,7 @@ fn chat_role_and_output_mode_round_trip_through_nota_text() {
             role: ChatRole::User,
             text: UserText::new("hello".to_owned()),
         },
-        "(User [hello])",
+        "(User hello)",
     );
 }
 
