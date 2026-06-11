@@ -3,8 +3,8 @@
 ;;
 ;; One example per request, reply, and stream-event variant, in the exact
 ;; schema-derived wire form (schema/lib.schema -> schema-rust-next -> generated
-;; Input / Output / AgentEvent). String newtypes (`{ value String }`)
-;; bracket-wrap, so `[deepseek-chat]` not bare `deepseek-chat`. Single-field
+;; Input / Output / AgentEvent). String delimiters are only for strings that
+;; need them; bare atoms such as `deepseek-v4-flash` stay bare. Single-field
 ;; payload records flatten through their newtype, so a one-field operation head
 ;; carries its inner value directly (`(CancelStream 7)`).
 ;;
@@ -17,8 +17,8 @@
 ;;   Prompt = (system?  transcript  options)
 ;;   options = (model?  provider?  temperature_milli?  maximum_output_tokens?  output_mode)
 
-(Call ((Some [You judge intent.]) [(User [Is this a durable decision?])] ((Some [deepseek-chat]) (Some [deepseek]) (Some 200) (Some 512) Nota)))
-(StreamCall ((Some [Stream the judgement.]) [(User [Explain step by step.])] (None (Some [mimo]) None (Some 1024) FreeText)))
+(Call ((Some [You judge intent.]) [(User [Is this a durable decision?])] ((Some deepseek-v4-flash) (Some deepseek) (Some 200) (Some 512) Nota)))
+(StreamCall ((Some [Stream the judgement.]) [(User [Explain step by step.])] (None (Some mimo) None (Some 1024) FreeText)))
 (CancelStream 7)
 
 ;; Replies

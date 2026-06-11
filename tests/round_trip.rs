@@ -40,7 +40,7 @@ fn guardian_prompt() -> Prompt {
             ChatMessage::assistant("Considering."),
         ]),
         options: PromptOptions {
-            model: Some(ModelName::new("deepseek-chat".to_owned())),
+            model: Some(ModelName::new("deepseek-v4-flash".to_owned())),
             provider: Some(ProviderName::new("deepseek".to_owned())),
             temperature_milli: Some(TemperatureMilli::new(200)),
             maximum_output_tokens: Some(MaximumOutputTokens::new(512)),
