@@ -51,12 +51,21 @@
   ;; and retries once before rejecting, so the guardian gets a typed NOTA verdict.
   OutputMode [FreeText Nota]
 
+  ;; Reasoning controls for thinking-capable providers (DeepSeek V4 and peers).
+  ;; A deliberate judge — the Spirit guardian — asks for thinking enabled at high
+  ;; effort; ordinary callers leave both unset for the provider default. Typed
+  ;; value enums, never stringly-typed knobs, so the wire carries the closed set.
+  ReasoningEffort [Low Medium High]
+  ThinkingMode [Enabled Disabled]
+
   PromptOptions {
     model (Optional ModelName)
     provider (Optional ProviderName)
     temperature_milli (Optional TemperatureMilli)
     maximum_output_tokens (Optional MaximumOutputTokens)
     output_mode OutputMode
+    reasoning_effort (Optional ReasoningEffort)
+    thinking_mode (Optional ThinkingMode)
   }
 
   ;; A Prompt carries a system message, the user transcript, and call options. The

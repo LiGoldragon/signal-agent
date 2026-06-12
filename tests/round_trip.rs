@@ -7,8 +7,9 @@ use signal_agent::{
     AgentEvent, Call, CallRejection, CallRejectionReason, CancelStream, ChatMessage, ChatRole,
     ChatTranscript, Completion, CompletionStreamDelta, CompletionText, DeltaSequence, Frame,
     FrameBody, Input, MaximumOutputTokens, ModelName, OperationKind, Output, OutputMode, Prompt,
-    PromptOptions, ProviderName, RejectionDetail, RequestUnimplemented, StopReasonText, StreamCall,
-    StreamCancellation, StreamOpening, StreamToken, SystemText, TemperatureMilli, TokenDelta,
+    PromptOptions, ProviderName, ReasoningEffort, RejectionDetail, RequestUnimplemented,
+    StopReasonText, StreamCall, StreamCancellation, StreamOpening, StreamToken, SystemText,
+    TemperatureMilli, ThinkingMode, TokenDelta,
     TokenStreamDelta, TokenUsage, UnimplementedReason, UserText,
 };
 use signal_frame::{
@@ -45,6 +46,8 @@ fn guardian_prompt() -> Prompt {
             temperature_milli: Some(TemperatureMilli::new(200)),
             maximum_output_tokens: Some(MaximumOutputTokens::new(512)),
             output_mode: OutputMode::Nota,
+            reasoning_effort: Some(ReasoningEffort::High),
+            thinking_mode: Some(ThinkingMode::Enabled),
         },
     }
 }

@@ -138,6 +138,41 @@ pub enum OutputMode {
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[derive(
+    rkyv::Archive,
+    rkyv::Serialize,
+    rkyv::Deserialize,
+    Clone,
+    Copy,
+    Debug,
+    PartialEq,
+    Eq,
+)]
+pub enum ReasoningEffort {
+    Low,
+    Medium,
+    High,
+}
+
+#[rustfmt::skip]
+#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[derive(
+    rkyv::Archive,
+    rkyv::Serialize,
+    rkyv::Deserialize,
+    Clone,
+    Copy,
+    Debug,
+    PartialEq,
+    Eq,
+)]
+pub enum ThinkingMode {
+    Enabled,
+    Disabled,
+}
+
+#[rustfmt::skip]
+#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct PromptOptions {
     pub model: Option<ModelName>,
@@ -145,6 +180,8 @@ pub struct PromptOptions {
     pub temperature_milli: Option<TemperatureMilli>,
     pub maximum_output_tokens: Option<MaximumOutputTokens>,
     pub output_mode: OutputMode,
+    pub reasoning_effort: Option<ReasoningEffort>,
+    pub thinking_mode: Option<ThinkingMode>,
 }
 
 #[rustfmt::skip]
