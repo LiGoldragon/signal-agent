@@ -18,6 +18,11 @@ path = "src/lib.rs"
 default = ["nota-text"]
 nota-text = ["dep:nota-next", "signal-frame/nota-text"]
 
+[[test]]
+name = "round_trip"
+path = "tests/round_trip.rs"
+required-features = ["nota-text"]
+
 [dependencies]
 nota-next    = { git = "https://github.com/LiGoldragon/nota-next.git", branch = "main", optional = true }
 rkyv         = { version = "0.8", default-features = false, features = ["std", "bytecheck", "little_endian", "pointer_width_32", "unaligned"] }
