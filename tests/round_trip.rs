@@ -9,8 +9,8 @@ use signal_agent::{
     FrameBody, Input, MaximumOutputTokens, ModelName, OperationKind, Output, OutputMode, Prompt,
     PromptOptions, ProviderName, ReasoningEffort, RejectionDetail, RequestUnimplemented,
     StopReasonText, StreamCall, StreamCancellation, StreamOpening, StreamToken, SystemText,
-    TemperatureMilli, ThinkingMode, TokenDelta,
-    TokenStreamDelta, TokenUsage, UnimplementedReason, UserText,
+    TemperatureMilli, ThinkingMode, TokenDelta, TokenStreamDelta, TokenUsage, UnimplementedReason,
+    UserText,
 };
 use signal_frame::{
     ExchangeIdentifier, ExchangeLane, LaneSequence, NonEmpty, Reply, SessionEpoch,
