@@ -24,26 +24,26 @@
  (RequestUnimplemented RequestUnimplemented)
  (Event AgentEvent)]
 {
-  SystemText { value String }
-  UserText { value String }
-  AssistantText { value String }
-  ModelName { value String }
-  ProviderName { value String }
-  StreamToken { value Integer }
-  TokenDelta { value String }
-  DeltaSequence { value Integer }
-  TemperatureMilli { value Integer }
-  MaximumOutputTokens { value Integer }
-  CompletionText { value String }
-  StopReasonText { value String }
-  PromptTokenCount { value Integer }
-  CompletionTokenCount { value Integer }
-  RejectionDetail { value String }
+  SystemText String
+  UserText String
+  AssistantText String
+  ModelName String
+  ProviderName String
+  StreamToken Integer
+  TokenDelta String
+  DeltaSequence Integer
+  TemperatureMilli Integer
+  MaximumOutputTokens Integer
+  CompletionText String
+  StopReasonText String
+  PromptTokenCount Integer
+  CompletionTokenCount Integer
+  RejectionDetail String
 
   ;; A turn in the chat transcript. Closed roles; no free-form string role.
   ChatRole [System User Assistant]
-  ChatMessage { role ChatRole text UserText }
-  ChatTranscript { messages (Vec ChatMessage) }
+  ChatMessage { role.ChatRole text.UserText }
+  ChatTranscript (Vector ChatMessage)
 
   ;; The output shaping the guardian wants: free-form text, or a NOTA response —
   ;; the model emits one valid NOTA expression directly (no JSON translation). The
@@ -63,7 +63,7 @@
     provider (Optional ProviderName)
     temperature_milli (Optional TemperatureMilli)
     maximum_output_tokens (Optional MaximumOutputTokens)
-    output_mode OutputMode
+    output_mode.OutputMode
     reasoning_effort (Optional ReasoningEffort)
     thinking_mode (Optional ThinkingMode)
   }
@@ -72,8 +72,8 @@
   ;; system text is optional because some providers reject an empty system turn.
   Prompt {
     system (Optional SystemText)
-    transcript ChatTranscript
-    options PromptOptions
+    transcript.ChatTranscript
+    options.PromptOptions
   }
 
   TokenUsage {
@@ -82,17 +82,17 @@
   }
 
   ;; One single-shot call.
-  Call { prompt Prompt }
+  Call Prompt
   ;; The same call, streamed: the daemon pushes TokenDelta events on the opened
   ;; CompletionStream, then a terminal CompletionDelta with stop reason.
-  StreamCall { prompt Prompt }
-  CancelStream { token StreamToken }
+  StreamCall Prompt
+  CancelStream StreamToken
 
   ;; The single-shot reply.
   Completion {
-    text CompletionText
-    stop_reason StopReasonText
-    usage TokenUsage
+    text.CompletionText
+    stop_reason.StopReasonText
+    usage.TokenUsage
   }
 
   CallRejectionReason [
@@ -103,19 +103,19 @@
     InvalidNotaOutput
     DaemonUnconfigured
   ]
-  CallRejection { reason CallRejectionReason detail RejectionDetail }
+  CallRejection { reason.CallRejectionReason detail.RejectionDetail }
 
-  StreamOpening { token StreamToken }
-  StreamCancellation { token StreamToken }
+  StreamOpening StreamToken
+  StreamCancellation StreamToken
 
   OperationKind [Call StreamCall CancelStream]
   UnimplementedReason [NotInPrototypeScope]
-  RequestUnimplemented { operation OperationKind reason UnimplementedReason }
+  RequestUnimplemented { operation.OperationKind reason.UnimplementedReason }
 
   ;; Stream events on CompletionStream: token deltas, then one terminal delta that
   ;; closes the transcript with the stop reason and usage.
-  TokenStreamDelta { token StreamToken sequence DeltaSequence delta TokenDelta }
-  CompletionStreamDelta { token StreamToken stop_reason StopReasonText usage TokenUsage }
+  TokenStreamDelta { token.StreamToken sequence.DeltaSequence delta.TokenDelta }
+  CompletionStreamDelta { token.StreamToken stop_reason.StopReasonText usage.TokenUsage }
 
   AgentEvent [
     (TokenStreamDelta TokenStreamDelta belongs CompletionStream)
