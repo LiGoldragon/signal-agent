@@ -34,29 +34,26 @@ fn stream_event() -> StreamEventIdentifier {
 }
 
 fn guardian_prompt() -> Prompt {
-    Prompt {
-        system: Some(SystemText::new("You judge intent.".to_owned())),
-        transcript: ChatTranscript::new(vec![
+    Prompt::new(
+        Some(SystemText::new("You judge intent.".to_owned())),
+        ChatTranscript::new(vec![
             ChatMessage::user("Is this a durable decision?"),
             ChatMessage::assistant("Considering."),
         ]),
-        options: PromptOptions {
-            model: Some(ModelName::new("deepseek-v4-flash".to_owned())),
-            provider: Some(ProviderName::new("deepseek".to_owned())),
-            temperature_milli: Some(TemperatureMilli::new(200)),
-            maximum_output_tokens: Some(MaximumOutputTokens::new(512)),
-            output_mode: OutputMode::Nota,
-            reasoning_effort: Some(ReasoningEffort::High),
-            thinking_mode: Some(ThinkingMode::Enabled),
-        },
-    }
+        PromptOptions::new(
+            Some(ModelName::new("deepseek-v4-flash".to_owned())),
+            Some(ProviderName::new("deepseek".to_owned())),
+            Some(TemperatureMilli::new(200)),
+            Some(MaximumOutputTokens::new(512)),
+            OutputMode::Nota,
+            Some(ReasoningEffort::High),
+            Some(ThinkingMode::Enabled),
+        ),
+    )
 }
 
 fn usage() -> TokenUsage {
-    TokenUsage {
-        prompt_tokens: None,
-        completion_tokens: None,
-    }
+    TokenUsage::new(None, None)
 }
 
 fn round_trip_request(request: Input) -> Input {
@@ -130,9 +127,9 @@ fn every_request_round_trips_through_streaming_frame() {
 fn every_reply_round_trips_through_streaming_frame() {
     let replies = [
         Output::Completed(Completion {
-            text: CompletionText::new("Yes, durable.".to_owned()),
+            completion_text: CompletionText::new("Yes, durable.".to_owned()),
             stop_reason: StopReasonText::new("stop".to_owned()),
-            usage: usage(),
+            token_usage: usage(),
         }),
         Output::CallRejected(CallRejection {
             reason: CallRejectionReason::NoProviderConfigured,
@@ -161,7 +158,7 @@ fn stream_events_round_trip_through_subscription_frame() {
         AgentEvent::CompletionStreamDelta(CompletionStreamDelta {
             token: StreamToken::new(7),
             stop_reason: StopReasonText::new("stop".to_owned()),
-            usage: usage(),
+            token_usage: usage(),
         }),
     ];
     for event in events {

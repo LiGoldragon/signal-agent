@@ -174,31 +174,76 @@ pub enum ThinkingMode {
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+pub(crate) struct Model(Option<ModelName>);
+
+#[rustfmt::skip]
+#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+pub(crate) struct Provider(Option<ProviderName>);
+
+#[rustfmt::skip]
+#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+pub(crate) struct TemperatureMilliSelection(Option<TemperatureMilli>);
+
+#[rustfmt::skip]
+#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+pub(crate) struct MaximumOutputTokensSelection(Option<MaximumOutputTokens>);
+
+#[rustfmt::skip]
+#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+pub(crate) struct ReasoningEffortSelection(Option<ReasoningEffort>);
+
+#[rustfmt::skip]
+#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+pub(crate) struct ThinkingModeSelection(Option<ThinkingMode>);
+
+#[rustfmt::skip]
+#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct PromptOptions {
-    pub model: Option<ModelName>,
-    pub provider: Option<ProviderName>,
-    pub temperature_milli: Option<TemperatureMilli>,
-    pub maximum_output_tokens: Option<MaximumOutputTokens>,
+    pub(crate) model: Model,
+    pub(crate) provider: Provider,
+    pub(crate) temperature_milli_selection: TemperatureMilliSelection,
+    pub(crate) maximum_output_tokens_selection: MaximumOutputTokensSelection,
     pub output_mode: OutputMode,
-    pub reasoning_effort: Option<ReasoningEffort>,
-    pub thinking_mode: Option<ThinkingMode>,
+    pub(crate) reasoning_effort_selection: ReasoningEffortSelection,
+    pub(crate) thinking_mode_selection: ThinkingModeSelection,
 }
+
+#[rustfmt::skip]
+#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+pub(crate) struct System(Option<SystemText>);
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct Prompt {
-    pub system: Option<SystemText>,
-    pub transcript: ChatTranscript,
-    pub options: PromptOptions,
+    pub(crate) system: System,
+    pub chat_transcript: ChatTranscript,
+    pub prompt_options: PromptOptions,
 }
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+pub(crate) struct PromptTokens(Option<PromptTokenCount>);
+
+#[rustfmt::skip]
+#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+pub(crate) struct CompletionTokens(Option<CompletionTokenCount>);
+
+#[rustfmt::skip]
+#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct TokenUsage {
-    pub prompt_tokens: Option<PromptTokenCount>,
-    pub completion_tokens: Option<CompletionTokenCount>,
+    pub(crate) prompt_tokens: PromptTokens,
+    pub(crate) completion_tokens: CompletionTokens,
 }
 
 #[rustfmt::skip]
@@ -220,9 +265,9 @@ pub struct CancelStream(StreamToken);
 #[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct Completion {
-    pub text: CompletionText,
+    pub completion_text: CompletionText,
     pub stop_reason: StopReasonText,
-    pub usage: TokenUsage,
+    pub token_usage: TokenUsage,
 }
 
 #[rustfmt::skip]
@@ -321,7 +366,7 @@ pub struct TokenStreamDelta {
 pub struct CompletionStreamDelta {
     pub token: StreamToken,
     pub stop_reason: StopReasonText,
-    pub usage: TokenUsage,
+    pub token_usage: TokenUsage,
 }
 
 #[rustfmt::skip]
@@ -923,6 +968,177 @@ impl ChatTranscript {
 #[rustfmt::skip]
 impl From<Vec<ChatMessage>> for ChatTranscript {
     fn from(payload: Vec<ChatMessage>) -> Self {
+        Self::new(payload)
+    }
+}
+
+#[rustfmt::skip]
+impl Model {
+    pub fn new(payload: Option<ModelName>) -> Self {
+        Self(payload)
+    }
+    pub fn payload(&self) -> &Option<ModelName> {
+        &self.0
+    }
+    pub fn into_payload(self) -> Option<ModelName> {
+        self.0
+    }
+}
+#[rustfmt::skip]
+impl From<Option<ModelName>> for Model {
+    fn from(payload: Option<ModelName>) -> Self {
+        Self::new(payload)
+    }
+}
+
+#[rustfmt::skip]
+impl Provider {
+    pub fn new(payload: Option<ProviderName>) -> Self {
+        Self(payload)
+    }
+    pub fn payload(&self) -> &Option<ProviderName> {
+        &self.0
+    }
+    pub fn into_payload(self) -> Option<ProviderName> {
+        self.0
+    }
+}
+#[rustfmt::skip]
+impl From<Option<ProviderName>> for Provider {
+    fn from(payload: Option<ProviderName>) -> Self {
+        Self::new(payload)
+    }
+}
+
+#[rustfmt::skip]
+impl TemperatureMilliSelection {
+    pub fn new(payload: Option<TemperatureMilli>) -> Self {
+        Self(payload)
+    }
+    pub fn payload(&self) -> &Option<TemperatureMilli> {
+        &self.0
+    }
+    pub fn into_payload(self) -> Option<TemperatureMilli> {
+        self.0
+    }
+}
+#[rustfmt::skip]
+impl From<Option<TemperatureMilli>> for TemperatureMilliSelection {
+    fn from(payload: Option<TemperatureMilli>) -> Self {
+        Self::new(payload)
+    }
+}
+
+#[rustfmt::skip]
+impl MaximumOutputTokensSelection {
+    pub fn new(payload: Option<MaximumOutputTokens>) -> Self {
+        Self(payload)
+    }
+    pub fn payload(&self) -> &Option<MaximumOutputTokens> {
+        &self.0
+    }
+    pub fn into_payload(self) -> Option<MaximumOutputTokens> {
+        self.0
+    }
+}
+#[rustfmt::skip]
+impl From<Option<MaximumOutputTokens>> for MaximumOutputTokensSelection {
+    fn from(payload: Option<MaximumOutputTokens>) -> Self {
+        Self::new(payload)
+    }
+}
+
+#[rustfmt::skip]
+impl ReasoningEffortSelection {
+    pub fn new(payload: Option<ReasoningEffort>) -> Self {
+        Self(payload)
+    }
+    pub fn payload(&self) -> &Option<ReasoningEffort> {
+        &self.0
+    }
+    pub fn into_payload(self) -> Option<ReasoningEffort> {
+        self.0
+    }
+}
+#[rustfmt::skip]
+impl From<Option<ReasoningEffort>> for ReasoningEffortSelection {
+    fn from(payload: Option<ReasoningEffort>) -> Self {
+        Self::new(payload)
+    }
+}
+
+#[rustfmt::skip]
+impl ThinkingModeSelection {
+    pub fn new(payload: Option<ThinkingMode>) -> Self {
+        Self(payload)
+    }
+    pub fn payload(&self) -> &Option<ThinkingMode> {
+        &self.0
+    }
+    pub fn into_payload(self) -> Option<ThinkingMode> {
+        self.0
+    }
+}
+#[rustfmt::skip]
+impl From<Option<ThinkingMode>> for ThinkingModeSelection {
+    fn from(payload: Option<ThinkingMode>) -> Self {
+        Self::new(payload)
+    }
+}
+
+#[rustfmt::skip]
+impl System {
+    pub fn new(payload: Option<SystemText>) -> Self {
+        Self(payload)
+    }
+    pub fn payload(&self) -> &Option<SystemText> {
+        &self.0
+    }
+    pub fn into_payload(self) -> Option<SystemText> {
+        self.0
+    }
+}
+#[rustfmt::skip]
+impl From<Option<SystemText>> for System {
+    fn from(payload: Option<SystemText>) -> Self {
+        Self::new(payload)
+    }
+}
+
+#[rustfmt::skip]
+impl PromptTokens {
+    pub fn new(payload: Option<PromptTokenCount>) -> Self {
+        Self(payload)
+    }
+    pub fn payload(&self) -> &Option<PromptTokenCount> {
+        &self.0
+    }
+    pub fn into_payload(self) -> Option<PromptTokenCount> {
+        self.0
+    }
+}
+#[rustfmt::skip]
+impl From<Option<PromptTokenCount>> for PromptTokens {
+    fn from(payload: Option<PromptTokenCount>) -> Self {
+        Self::new(payload)
+    }
+}
+
+#[rustfmt::skip]
+impl CompletionTokens {
+    pub fn new(payload: Option<CompletionTokenCount>) -> Self {
+        Self(payload)
+    }
+    pub fn payload(&self) -> &Option<CompletionTokenCount> {
+        &self.0
+    }
+    pub fn into_payload(self) -> Option<CompletionTokenCount> {
+        self.0
+    }
+}
+#[rustfmt::skip]
+impl From<Option<CompletionTokenCount>> for CompletionTokens {
+    fn from(payload: Option<CompletionTokenCount>) -> Self {
         Self::new(payload)
     }
 }

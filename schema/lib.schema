@@ -35,7 +35,7 @@
 
   ;; A turn in the chat transcript. Closed roles; no free-form string role.
   ChatRole [System User Assistant]
-  ChatMessage { role ChatRole text UserText }
+  ChatMessage { role.ChatRole text.UserText }
   ChatTranscript (Vector ChatMessage)
 
   ;; The output shaping the guardian wants: free-form text, or a NOTA response —
@@ -52,26 +52,26 @@
   ThinkingMode [Enabled Disabled]
 
   PromptOptions {
-    model (Optional ModelName)
-    provider (Optional ProviderName)
-    temperature_milli (Optional TemperatureMilli)
-    maximum_output_tokens (Optional MaximumOutputTokens)
-    output_mode OutputMode
-    reasoning_effort (Optional ReasoningEffort)
-    thinking_mode (Optional ThinkingMode)
+    (Model (Optional ModelName))
+    (Provider (Optional ProviderName))
+    (TemperatureMilliSelection (Optional TemperatureMilli))
+    (MaximumOutputTokensSelection (Optional MaximumOutputTokens))
+    OutputMode
+    (ReasoningEffortSelection (Optional ReasoningEffort))
+    (ThinkingModeSelection (Optional ThinkingMode))
   }
 
   ;; A Prompt carries a system message, the user transcript, and call options. The
   ;; system text is optional because some providers reject an empty system turn.
   Prompt {
-    system (Optional SystemText)
-    transcript ChatTranscript
-    options PromptOptions
+    (System (Optional SystemText))
+    ChatTranscript
+    PromptOptions
   }
 
   TokenUsage {
-    prompt_tokens (Optional PromptTokenCount)
-    completion_tokens (Optional CompletionTokenCount)
+    (PromptTokens (Optional PromptTokenCount))
+    (CompletionTokens (Optional CompletionTokenCount))
   }
 
   ;; One single-shot call.
@@ -83,9 +83,9 @@
 
   ;; The single-shot reply.
   Completion {
-    text CompletionText
-    stop_reason StopReasonText
-    usage TokenUsage
+    CompletionText
+    stop_reason.StopReasonText
+    TokenUsage
   }
 
   CallRejectionReason [
@@ -96,19 +96,19 @@
     InvalidNotaOutput
     DaemonUnconfigured
   ]
-  CallRejection { reason CallRejectionReason detail RejectionDetail }
+  CallRejection { reason.CallRejectionReason detail.RejectionDetail }
 
   StreamOpening StreamToken
   StreamCancellation StreamToken
 
   OperationKind [Call StreamCall CancelStream]
   UnimplementedReason [NotInPrototypeScope]
-  RequestUnimplemented { operation OperationKind reason UnimplementedReason }
+  RequestUnimplemented { operation.OperationKind reason.UnimplementedReason }
 
   ;; Stream events on CompletionStream: token deltas, then one terminal delta that
   ;; closes the transcript with the stop reason and usage.
-  TokenStreamDelta { token StreamToken sequence DeltaSequence delta TokenDelta }
-  CompletionStreamDelta { token StreamToken stop_reason StopReasonText usage TokenUsage }
+  TokenStreamDelta { token.StreamToken sequence.DeltaSequence delta.TokenDelta }
+  CompletionStreamDelta { token.StreamToken stop_reason.StopReasonText TokenUsage }
 
   AgentEvent [
     (TokenStreamDelta TokenStreamDelta belongs CompletionStream)

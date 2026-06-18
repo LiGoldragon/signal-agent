@@ -15,6 +15,7 @@
 //! is a freshness-checked schema-rust-next artifact, not handwritten vocabulary.
 //! See `ARCHITECTURE.md` for the channel's role and boundaries.
 
+#[allow(dead_code)]
 #[rustfmt::skip]
 pub mod schema;
 
@@ -39,6 +40,56 @@ impl ChatMessage {
         Self {
             role: ChatRole::Assistant,
             text: UserText::new(text.into()),
+        }
+    }
+}
+
+impl PromptOptions {
+    pub fn new(
+        model: Option<ModelName>,
+        provider: Option<ProviderName>,
+        temperature_milli: Option<TemperatureMilli>,
+        maximum_output_tokens: Option<MaximumOutputTokens>,
+        output_mode: OutputMode,
+        reasoning_effort: Option<ReasoningEffort>,
+        thinking_mode: Option<ThinkingMode>,
+    ) -> Self {
+        Self {
+            model: Model::new(model),
+            provider: Provider::new(provider),
+            temperature_milli_selection: TemperatureMilliSelection::new(temperature_milli),
+            maximum_output_tokens_selection: MaximumOutputTokensSelection::new(
+                maximum_output_tokens,
+            ),
+            output_mode,
+            reasoning_effort_selection: ReasoningEffortSelection::new(reasoning_effort),
+            thinking_mode_selection: ThinkingModeSelection::new(thinking_mode),
+        }
+    }
+}
+
+impl Prompt {
+    pub fn new(
+        system: Option<SystemText>,
+        chat_transcript: ChatTranscript,
+        prompt_options: PromptOptions,
+    ) -> Self {
+        Self {
+            system: System::new(system),
+            chat_transcript,
+            prompt_options,
+        }
+    }
+}
+
+impl TokenUsage {
+    pub fn new(
+        prompt_tokens: Option<PromptTokenCount>,
+        completion_tokens: Option<CompletionTokenCount>,
+    ) -> Self {
+        Self {
+            prompt_tokens: PromptTokens::new(prompt_tokens),
+            completion_tokens: CompletionTokens::new(completion_tokens),
         }
     }
 }
