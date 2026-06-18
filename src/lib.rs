@@ -66,6 +66,34 @@ impl PromptOptions {
             thinking_mode_selection: ThinkingModeSelection::new(thinking_mode),
         }
     }
+
+    pub fn model(&self) -> Option<&ModelName> {
+        self.model.payload().as_ref()
+    }
+
+    pub fn provider(&self) -> Option<&ProviderName> {
+        self.provider.payload().as_ref()
+    }
+
+    pub fn temperature_milli(&self) -> Option<&TemperatureMilli> {
+        self.temperature_milli_selection.payload().as_ref()
+    }
+
+    pub fn maximum_output_tokens(&self) -> Option<&MaximumOutputTokens> {
+        self.maximum_output_tokens_selection.payload().as_ref()
+    }
+
+    pub fn output_mode(&self) -> OutputMode {
+        self.output_mode
+    }
+
+    pub fn reasoning_effort(&self) -> Option<&ReasoningEffort> {
+        self.reasoning_effort_selection.payload().as_ref()
+    }
+
+    pub fn thinking_mode(&self) -> Option<&ThinkingMode> {
+        self.thinking_mode_selection.payload().as_ref()
+    }
 }
 
 impl Prompt {
@@ -79,6 +107,18 @@ impl Prompt {
             chat_transcript,
             prompt_options,
         }
+    }
+
+    pub fn system(&self) -> Option<&SystemText> {
+        self.system.payload().as_ref()
+    }
+
+    pub fn chat_transcript(&self) -> &ChatTranscript {
+        &self.chat_transcript
+    }
+
+    pub fn prompt_options(&self) -> &PromptOptions {
+        &self.prompt_options
     }
 }
 
