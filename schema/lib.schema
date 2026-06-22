@@ -52,26 +52,26 @@
   ThinkingMode [Enabled Disabled]
 
   PromptOptions {
-    (Model (Optional ModelName))
-    (Provider (Optional ProviderName))
-    (TemperatureMilliSelection (Optional TemperatureMilli))
-    (MaximumOutputTokensSelection (Optional MaximumOutputTokens))
+    Model.(Optional ModelName)
+    Provider.(Optional ProviderName)
+    TemperatureMilliSelection.(Optional TemperatureMilli)
+    MaximumOutputTokensSelection.(Optional MaximumOutputTokens)
     OutputMode
-    (ReasoningEffortSelection (Optional ReasoningEffort))
-    (ThinkingModeSelection (Optional ThinkingMode))
+    ReasoningEffortSelection.(Optional ReasoningEffort)
+    ThinkingModeSelection.(Optional ThinkingMode)
   }
 
   ;; A Prompt carries a system message, the user transcript, and call options. The
   ;; system text is optional because some providers reject an empty system turn.
   Prompt {
-    (System (Optional SystemText))
+    System.(Optional SystemText)
     ChatTranscript
     PromptOptions
   }
 
   TokenUsage {
-    (PromptTokens (Optional PromptTokenCount))
-    (CompletionTokens (Optional CompletionTokenCount))
+    PromptTokens.(Optional PromptTokenCount)
+    CompletionTokens.(Optional CompletionTokenCount)
   }
 
   ;; One single-shot call.
@@ -114,5 +114,5 @@
     (TokenStreamDelta TokenStreamDelta belongs CompletionStream)
     (CompletionStreamDelta CompletionStreamDelta belongs CompletionStream)
   ]
-  CompletionStream (Stream { token StreamToken opened StreamOpening event AgentEvent close StreamToken })
+  CompletionStream (Stream { token.StreamToken opened.StreamOpening event.AgentEvent close.StreamToken })
 }
