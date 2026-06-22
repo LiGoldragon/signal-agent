@@ -14,82 +14,130 @@ pub type Path = std::string::String;
 pub use nota_next::{NotaDecodeError, NotaEncode, NotaSource};
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct SystemText(String);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct UserText(String);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct AssistantText(String);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct ModelName(String);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct ProviderName(String);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct StreamToken(Integer);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct TokenDelta(String);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct DeltaSequence(Integer);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct TemperatureMilli(Integer);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct MaximumOutputTokens(Integer);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct CompletionText(String);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct StopReasonText(String);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct PromptTokenCount(Integer);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct CompletionTokenCount(Integer);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct RejectionDetail(String);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(
     rkyv::Archive,
     rkyv::Serialize,
@@ -107,7 +155,10 @@ pub enum ChatRole {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct ChatMessage {
     pub role: ChatRole,
@@ -115,12 +166,18 @@ pub struct ChatMessage {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct ChatTranscript(Vec<ChatMessage>);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(
     rkyv::Archive,
     rkyv::Serialize,
@@ -137,7 +194,10 @@ pub enum OutputMode {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(
     rkyv::Archive,
     rkyv::Serialize,
@@ -155,7 +215,10 @@ pub enum ReasoningEffort {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(
     rkyv::Archive,
     rkyv::Serialize,
@@ -172,37 +235,58 @@ pub enum ThinkingMode {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct Model(Option<ModelName>);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct Provider(Option<ProviderName>);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct TemperatureMilliSelection(Option<TemperatureMilli>);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct MaximumOutputTokensSelection(Option<MaximumOutputTokens>);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct ReasoningEffortSelection(Option<ReasoningEffort>);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct ThinkingModeSelection(Option<ThinkingMode>);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct PromptOptions {
     pub(crate) model: Model,
@@ -215,12 +299,18 @@ pub struct PromptOptions {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct System(Option<SystemText>);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct Prompt {
     pub(crate) system: System,
@@ -229,17 +319,26 @@ pub struct Prompt {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct PromptTokens(Option<PromptTokenCount>);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct CompletionTokens(Option<CompletionTokenCount>);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct TokenUsage {
     pub(crate) prompt_tokens: PromptTokens,
@@ -247,22 +346,34 @@ pub struct TokenUsage {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct Call(Prompt);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct StreamCall(Prompt);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct CancelStream(StreamToken);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct Completion {
     pub completion_text: CompletionText,
@@ -271,7 +382,10 @@ pub struct Completion {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(
     rkyv::Archive,
     rkyv::Serialize,
@@ -292,7 +406,10 @@ pub enum CallRejectionReason {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct CallRejection {
     pub reason: CallRejectionReason,
@@ -300,17 +417,26 @@ pub struct CallRejection {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct StreamOpening(StreamToken);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct StreamCancellation(StreamToken);
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(
     rkyv::Archive,
     rkyv::Serialize,
@@ -328,7 +454,10 @@ pub enum OperationKind {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(
     rkyv::Archive,
     rkyv::Serialize,
@@ -344,7 +473,10 @@ pub enum UnimplementedReason {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct RequestUnimplemented {
     pub operation: OperationKind,
@@ -352,7 +484,10 @@ pub struct RequestUnimplemented {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct TokenStreamDelta {
     pub token: StreamToken,
@@ -361,7 +496,10 @@ pub struct TokenStreamDelta {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct CompletionStreamDelta {
     pub token: StreamToken,
@@ -370,7 +508,10 @@ pub struct CompletionStreamDelta {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub enum AgentEvent {
     TokenStreamDelta(TokenStreamDelta),
@@ -378,7 +519,10 @@ pub enum AgentEvent {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub enum Input {
     Call(Call),
@@ -387,7 +531,10 @@ pub enum Input {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub enum Output {
     Completed(Completion),
@@ -1171,7 +1318,10 @@ impl std::fmt::Display for SignalFrameError {
 impl std::error::Error for SignalFrameError {}
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(
     rkyv::Archive,
     rkyv::Serialize,
@@ -1189,7 +1339,10 @@ pub enum InputRoute {
 }
 
 #[rustfmt::skip]
-#[cfg_attr(feature = "nota-text", derive(nota_next::NotaDecode, nota_next::NotaEncode))]
+#[cfg_attr(
+    feature = "nota-text",
+    derive(nota_next::NotaDecode, nota_next::NotaDecodeTraced, nota_next::NotaEncode)
+)]
 #[derive(
     rkyv::Archive,
     rkyv::Serialize,
