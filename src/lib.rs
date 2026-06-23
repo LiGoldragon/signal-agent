@@ -12,7 +12,7 @@
 //! in `meta-signal-agent`, not a change to this contract.
 //!
 //! `schema/lib.schema` is the source of truth. The checked-in `src/schema/lib.rs`
-//! is a freshness-checked schema-rust-next artifact, not handwritten vocabulary.
+//! is a freshness-checked schema-rust artifact, not handwritten vocabulary.
 //! See `ARCHITECTURE.md` for the channel's role and boundaries.
 
 #[allow(dead_code)]

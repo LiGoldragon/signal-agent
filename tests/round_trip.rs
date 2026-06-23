@@ -2,7 +2,7 @@
 //! contract. Each request, reply, and stream-event variant round-trips through
 //! the `signal_frame::StreamingFrame` envelope (rkyv) and through NOTA text.
 
-use nota_next::{NotaDecode, NotaEncode, NotaSource};
+use nota::{NotaDecode, NotaEncode, NotaSource};
 use signal_agent::{
     AgentEvent, Call, CallRejection, CallRejectionReason, CancelStream, ChatMessage, ChatRole,
     ChatTranscript, Completion, CompletionStreamDelta, CompletionText, DeltaSequence, Frame,
