@@ -24,6 +24,37 @@ Adding a provider (DeepSeek, MiMo, Kimi, GLM, MiniMax) is configuration in
 `meta-signal-agent` — endpoint + model + key handle — never a change to this
 contract.
 
+## Component direction (archived intent)
+
+These records frame the `agent` component the contract serves. Daemon-side
+behavior they name lives in `agent` / `meta-signal-agent`, not in this
+contract crate.
+
+- **Workspace-native `agent` triad (`7yth`).** `agent` is the workspace-native
+  successor to `persona-llm-client` (the `persona-` prefix is dropped), shaped
+  as its own triad — `agent` CLI, `agent-daemon`, `signal-agent`, and an
+  owner-side `owner-signal-agent` — a supervised component others call for
+  pre-configured API agent calls (not a thin wrapper, not subsumed into Pi). It
+  hooks to `mind` for skills/context (a model call plus the agent is a thinking
+  process) and takes typed NOTA directly from the model via prompt examples
+  plus validate-and-retry, grammar-constrained when self-hosted. (The earlier
+  `gdbf` framing of `agent` as an abstraction over harness backends — Claude
+  Code / Codex / Pi sessions — is superseded: see **Scope** above, where
+  harness backends are deferred and the backend-spawn framing is discarded.
+  `gdbf`'s still-true core, providers as an HTTP-API-call component and Router
+  talking to `agent` rather than harness directly, is preserved by this triad.)
+- **Fallback chain and Criome escalation (`l0w8`).** LLM calls are computation
+  units configured as a default provider plus an ordered fallback-provider
+  chain tried in sequence, with per-provider config tweaks evaluated at the
+  typed daemon boundary. The daemon library is the reducer plus checker —
+  including authorization that can escalate to Criome — giving failure
+  tolerance and provider portability.
+- **Capability observation (`f8k7`).** Provider support may be build-time
+  opt-in; capability observation distinguishes built-but-unconfigured from
+  not-built, and an unsupported request returns a typed unsupported-capability
+  reply (this contract's `RequestUnimplemented` skeleton-honesty reply is the
+  wire surface for that case).
+
 ## Boundary
 
 This crate carries one peer-callable relation: a caller (the gated Spirit
