@@ -1,7 +1,7 @@
 # signal-agent agent notes
 
-You MUST read `/home/li/primary/AGENTS.md` first, then this repo's `INTENT.md`
-and `ARCHITECTURE.md`.
+You MUST read `/home/li/primary/AGENTS.md` first, then this repo's
+`ARCHITECTURE.md` — the durable direction read on entry before code.
 
 This repository is the ordinary schema-derived wire contract for the `agent`
 LLM-call component — the single-shot + streaming provider-call surface. `agent`

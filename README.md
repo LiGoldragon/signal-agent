@@ -10,5 +10,5 @@ configured provider to complete a prompt: `Call` (single-shot), `StreamCall`
 
 `schema/lib.schema` is the source of truth; `schema-rust-next` emits the
 freshness-checked `src/schema/lib.rs`. Read `ARCHITECTURE.md` for the channel
-shape and `INTENT.md` for the psyche-stated scope. Adding a provider is
-configuration in `meta-signal-agent`, never a change here.
+shape and the psyche-stated scope. Adding a provider is configuration in
+`meta-signal-agent`, never a change here.
