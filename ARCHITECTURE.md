@@ -6,7 +6,7 @@ triad: `agent` runtime, `signal-agent` ordinary contract, and
 `meta-signal-agent` meta policy contract.
 
 It is a schema-derived `WireContract` crate: `schema/lib.schema` is the source
-of truth; `schema-rust-next`'s `ContractCrateBuild` emits the freshness-checked
+of truth; `schema-rust`'s `ContractCrateBuild` emits the freshness-checked
 `src/schema/lib.rs` (wire types + rkyv + NOTA codecs over the
 `signal_frame::StreamingFrame` envelope). The crate carries no engine traits,
 runtime, actors, or `tokio`.
@@ -117,8 +117,8 @@ get a typed structured verdict back; the daemon asks the provider to emit JSON.
 ## Code map
 
 ```text
-schema/lib.schema       the source of truth (schema-rust-next grammar)
-src/schema/lib.rs        freshness-checked schema-rust-next artifact (generated)
+schema/lib.schema       the source of truth (schema-rust grammar)
+src/schema/lib.rs        freshness-checked schema-rust artifact (generated)
 src/lib.rs               module entry + hand-written methods on emitted nouns
 build.rs                 ContractCrateBuild -> WireContract emission
 examples/canonical.nota  one canonical NOTA example per operation/reply/event

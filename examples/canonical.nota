@@ -2,7 +2,7 @@
 ;; the `agent` LLM-call component.
 ;;
 ;; One example per request, reply, and stream-event variant, in the exact
-;; schema-derived wire form (schema/lib.schema -> schema-rust-next -> generated
+;; schema-derived wire form (schema/lib.schema -> schema-rust -> generated
 ;; Input / Output / AgentEvent). String delimiters are only for strings that
 ;; need them; bare atoms such as `deepseek-v4-flash` stay bare. Single-field
 ;; payload records flatten through their newtype, so a one-field operation head
