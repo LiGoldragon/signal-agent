@@ -35,7 +35,7 @@
 
   ;; A turn in the chat transcript. Closed roles; no free-form string role.
   ChatRole [System User Assistant]
-  ChatMessage { role.ChatRole text.UserText }
+  ChatMessage { ChatRole UserText }
   ChatTranscript (Vector ChatMessage)
 
   ;; The output shaping the guardian wants: free-form text, or a NOTA response —
@@ -84,7 +84,7 @@
   ;; The single-shot reply.
   Completion {
     CompletionText
-    stop_reason.StopReasonText
+    StopReasonText
     TokenUsage
   }
 
@@ -96,19 +96,19 @@
     InvalidNotaOutput
     DaemonUnconfigured
   ]
-  CallRejection { reason.CallRejectionReason detail.RejectionDetail }
+  CallRejection { CallRejectionReason RejectionDetail }
 
   StreamOpening StreamToken
   StreamCancellation StreamToken
 
   OperationKind [Call StreamCall CancelStream]
   UnimplementedReason [NotInPrototypeScope]
-  RequestUnimplemented { operation.OperationKind reason.UnimplementedReason }
+  RequestUnimplemented { OperationKind UnimplementedReason }
 
   ;; Stream events on CompletionStream: token deltas, then one terminal delta that
   ;; closes the transcript with the stop reason and usage.
-  TokenStreamDelta { token.StreamToken sequence.DeltaSequence delta.TokenDelta }
-  CompletionStreamDelta { token.StreamToken stop_reason.StopReasonText TokenUsage }
+  TokenStreamDelta { StreamToken DeltaSequence TokenDelta }
+  CompletionStreamDelta { StreamToken StopReasonText TokenUsage }
 
   AgentEvent [
     (TokenStreamDelta TokenStreamDelta belongs CompletionStream)

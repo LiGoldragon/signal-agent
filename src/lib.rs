@@ -24,22 +24,22 @@ pub use schema::lib::*;
 impl ChatMessage {
     pub fn system(text: impl Into<String>) -> Self {
         Self {
-            role: ChatRole::System,
-            text: UserText::new(text.into()),
+            chat_role: ChatRole::System,
+            user_text: UserText::new(text.into()),
         }
     }
 
     pub fn user(text: impl Into<String>) -> Self {
         Self {
-            role: ChatRole::User,
-            text: UserText::new(text.into()),
+            chat_role: ChatRole::User,
+            user_text: UserText::new(text.into()),
         }
     }
 
     pub fn assistant(text: impl Into<String>) -> Self {
         Self {
-            role: ChatRole::Assistant,
-            text: UserText::new(text.into()),
+            chat_role: ChatRole::Assistant,
+            user_text: UserText::new(text.into()),
         }
     }
 }

@@ -128,18 +128,18 @@ fn every_reply_round_trips_through_streaming_frame() {
     let replies = [
         Output::Completed(Completion {
             completion_text: CompletionText::new("Yes, durable.".to_owned()),
-            stop_reason: StopReasonText::new("stop".to_owned()),
+            stop_reason_text: StopReasonText::new("stop".to_owned()),
             token_usage: usage(),
         }),
         Output::CallRejected(CallRejection {
-            reason: CallRejectionReason::NoProviderConfigured,
-            detail: RejectionDetail::new("no provider in registry".to_owned()),
+            call_rejection_reason: CallRejectionReason::NoProviderConfigured,
+            rejection_detail: RejectionDetail::new("no provider in registry".to_owned()),
         }),
         Output::StreamOpened(StreamOpening::new(StreamToken::new(7))),
         Output::StreamCancelled(StreamCancellation::new(StreamToken::new(7))),
         Output::RequestUnimplemented(RequestUnimplemented {
-            operation: OperationKind::StreamCall,
-            reason: UnimplementedReason::NotInPrototypeScope,
+            operation_kind: OperationKind::StreamCall,
+            unimplemented_reason: UnimplementedReason::NotInPrototypeScope,
         }),
     ];
     for reply in replies {
@@ -151,13 +151,13 @@ fn every_reply_round_trips_through_streaming_frame() {
 fn stream_events_round_trip_through_subscription_frame() {
     let events = [
         AgentEvent::TokenStreamDelta(TokenStreamDelta {
-            token: StreamToken::new(7),
-            sequence: DeltaSequence::new(1),
-            delta: TokenDelta::new("Yes".to_owned()),
+            stream_token: StreamToken::new(7),
+            delta_sequence: DeltaSequence::new(1),
+            token_delta: TokenDelta::new("Yes".to_owned()),
         }),
         AgentEvent::CompletionStreamDelta(CompletionStreamDelta {
-            token: StreamToken::new(7),
-            stop_reason: StopReasonText::new("stop".to_owned()),
+            stream_token: StreamToken::new(7),
+            stop_reason_text: StopReasonText::new("stop".to_owned()),
             token_usage: usage(),
         }),
     ];
@@ -184,8 +184,8 @@ fn chat_role_and_output_mode_round_trip_through_nota_text() {
     round_trip_nota(OutputMode::Nota, "Nota");
     round_trip_nota(
         ChatMessage {
-            role: ChatRole::User,
-            text: UserText::new("hello".to_owned()),
+            chat_role: ChatRole::User,
+            user_text: UserText::new("hello".to_owned()),
         },
         "(User hello)",
     );
@@ -195,8 +195,8 @@ fn chat_role_and_output_mode_round_trip_through_nota_text() {
 fn call_rejection_round_trips_through_nota_text() {
     round_trip_nota(
         Output::CallRejected(CallRejection {
-            reason: CallRejectionReason::ProviderUnreachable,
-            detail: RejectionDetail::new("connection refused".to_owned()),
+            call_rejection_reason: CallRejectionReason::ProviderUnreachable,
+            rejection_detail: RejectionDetail::new("connection refused".to_owned()),
         }),
         "(CallRejected (ProviderUnreachable [connection refused]))",
     );

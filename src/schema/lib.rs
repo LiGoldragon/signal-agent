@@ -161,8 +161,8 @@ pub enum ChatRole {
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct ChatMessage {
-    pub role: ChatRole,
-    pub text: UserText,
+    pub chat_role: ChatRole,
+    pub user_text: UserText,
 }
 
 #[rustfmt::skip]
@@ -377,7 +377,7 @@ pub struct CancelStream(StreamToken);
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct Completion {
     pub completion_text: CompletionText,
-    pub stop_reason: StopReasonText,
+    pub stop_reason_text: StopReasonText,
     pub token_usage: TokenUsage,
 }
 
@@ -412,8 +412,8 @@ pub enum CallRejectionReason {
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct CallRejection {
-    pub reason: CallRejectionReason,
-    pub detail: RejectionDetail,
+    pub call_rejection_reason: CallRejectionReason,
+    pub rejection_detail: RejectionDetail,
 }
 
 #[rustfmt::skip]
@@ -479,8 +479,8 @@ pub enum UnimplementedReason {
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct RequestUnimplemented {
-    pub operation: OperationKind,
-    pub reason: UnimplementedReason,
+    pub operation_kind: OperationKind,
+    pub unimplemented_reason: UnimplementedReason,
 }
 
 #[rustfmt::skip]
@@ -490,9 +490,9 @@ pub struct RequestUnimplemented {
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct TokenStreamDelta {
-    pub token: StreamToken,
-    pub sequence: DeltaSequence,
-    pub delta: TokenDelta,
+    pub stream_token: StreamToken,
+    pub delta_sequence: DeltaSequence,
+    pub token_delta: TokenDelta,
 }
 
 #[rustfmt::skip]
@@ -502,8 +502,8 @@ pub struct TokenStreamDelta {
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct CompletionStreamDelta {
-    pub token: StreamToken,
-    pub stop_reason: StopReasonText,
+    pub stream_token: StreamToken,
+    pub stop_reason_text: StopReasonText,
     pub token_usage: TokenUsage,
 }
 
