@@ -1,8 +1,8 @@
 //! Architectural-truth round-trip tests for the schema-derived `signal-agent`
 //! contract. Each request, reply, and stream-event variant round-trips through
-//! the `signal_frame::StreamingFrame` envelope (rkyv) and through NOTA text.
+//! the `signal_frame::Frame` envelope (rkyv) and through DOTOS text.
 
-use nota::{NotaDecode, NotaEncode, NotaSource};
+use dotos::{DotosDecode, DotosEncode, DotosSource};
 use signal_agent::{
     AgentEvent, Call, CallRejection, CallRejectionReason, CancelStream, ChatMessage, ChatRole,
     ChatTranscript, Completion, CompletionStreamDelta, CompletionText, DeltaSequence, Frame,
@@ -13,22 +13,13 @@ use signal_agent::{
     UserText,
 };
 use signal_frame::{
-    ExchangeIdentifier, ExchangeLane, LaneSequence, NonEmpty, Reply, SessionEpoch,
-    StreamEventIdentifier, SubReply, SubscriptionTokenInner,
+    ExchangeIdentifier, ExchangeLane, LaneSequence, NonEmpty, Reply, SessionEpoch, SubReply,
 };
 
 fn exchange() -> ExchangeIdentifier {
     ExchangeIdentifier::new(
         SessionEpoch::new(1),
         ExchangeLane::Connector,
-        LaneSequence::first(),
-    )
-}
-
-fn stream_event() -> StreamEventIdentifier {
-    StreamEventIdentifier::new(
-        SessionEpoch::new(1),
-        ExchangeLane::Acceptor,
         LaneSequence::first(),
     )
 }
@@ -45,7 +36,7 @@ fn guardian_prompt() -> Prompt {
             Some(ProviderName::new("deepseek".to_owned())),
             Some(TemperatureMilli::new(200)),
             Some(MaximumOutputTokens::new(512)),
-            OutputMode::Nota,
+            OutputMode::Dotos,
             Some(ReasoningEffort::High),
             Some(ThinkingMode::Enabled),
         ),
@@ -71,10 +62,14 @@ fn round_trip_request(request: Input) -> Input {
 }
 
 fn round_trip_reply(reply: Output) -> Output {
-    let frame = Frame::new(FrameBody::Reply {
-        exchange: exchange(),
-        reply: Reply::committed(NonEmpty::single(SubReply::Ok(reply))),
-    });
+    let route = reply.wire_route();
+    let frame = Frame::new(
+        route,
+        FrameBody::Reply {
+            exchange: exchange(),
+            reply: Reply::committed(NonEmpty::single(SubReply::Ok(reply))),
+        },
+    );
     let bytes = frame.encode_length_prefixed().expect("encode");
     let decoded = Frame::decode_length_prefixed(&bytes).expect("decode");
     match decoded.into_body() {
@@ -90,29 +85,26 @@ fn round_trip_reply(reply: Output) -> Output {
 }
 
 fn round_trip_event(event: AgentEvent) -> AgentEvent {
-    let frame = event.into_subscription_frame(stream_event(), SubscriptionTokenInner::new(1));
-    let bytes = frame.encode_length_prefixed().expect("encode");
-    let decoded = Frame::decode_length_prefixed(&bytes).expect("decode");
-    match decoded.into_body() {
-        FrameBody::SubscriptionEvent { event, .. } => event,
-        other => panic!("expected subscription event, got {other:?}"),
+    match round_trip_reply(Output::Event(event)) {
+        Output::Event(event) => event,
+        other => panic!("expected event reply, got {other:?}"),
     }
 }
 
-fn round_trip_nota<T>(value: T, expected: &str)
+fn round_trip_dotos<T>(value: T, expected: &str)
 where
-    T: NotaEncode + NotaDecode + PartialEq + std::fmt::Debug,
+    T: DotosEncode + DotosDecode + PartialEq + std::fmt::Debug,
 {
-    let encoded = value.to_nota();
+    let encoded = value.to_dotos();
     assert_eq!(encoded, expected);
-    let recovered = NotaSource::new(&encoded)
+    let recovered = DotosSource::new(&encoded)
         .parse::<T>()
-        .expect("decode nota text");
+        .expect("decode dotos text");
     assert_eq!(recovered, value);
 }
 
 #[test]
-fn every_request_round_trips_through_streaming_frame() {
+fn every_request_round_trips_through_length_prefixed_frame() {
     let requests = [
         Input::Call(Call::new(guardian_prompt())),
         Input::StreamCall(StreamCall::new(guardian_prompt())),
@@ -124,7 +116,7 @@ fn every_request_round_trips_through_streaming_frame() {
 }
 
 #[test]
-fn every_reply_round_trips_through_streaming_frame() {
+fn every_reply_round_trips_through_length_prefixed_frame() {
     let replies = [
         Output::Completed(Completion {
             completion_text: CompletionText::new("Yes, durable.".to_owned()),
@@ -148,7 +140,7 @@ fn every_reply_round_trips_through_streaming_frame() {
 }
 
 #[test]
-fn stream_events_round_trip_through_subscription_frame() {
+fn stream_events_round_trip_through_routed_reply_frames() {
     let events = [
         AgentEvent::TokenStreamDelta(TokenStreamDelta {
             stream_token: StreamToken::new(7),
@@ -179,25 +171,25 @@ fn input_exposes_contract_owned_operation_kind() {
 }
 
 #[test]
-fn chat_role_and_output_mode_round_trip_through_nota_text() {
-    round_trip_nota(ChatRole::Assistant, "Assistant");
-    round_trip_nota(OutputMode::Nota, "Nota");
-    round_trip_nota(
+fn chat_role_and_output_mode_round_trip_through_dotos_text() {
+    round_trip_dotos(ChatRole::Assistant, "Assistant");
+    round_trip_dotos(OutputMode::Dotos, "Dotos");
+    round_trip_dotos(
         ChatMessage {
             chat_role: ChatRole::User,
             user_text: UserText::new("hello".to_owned()),
         },
-        "(User hello)",
+        "{User hello}",
     );
 }
 
 #[test]
-fn call_rejection_round_trips_through_nota_text() {
-    round_trip_nota(
+fn call_rejection_round_trips_through_dotos_text() {
+    round_trip_dotos(
         Output::CallRejected(CallRejection {
             call_rejection_reason: CallRejectionReason::ProviderUnreachable,
             rejection_detail: RejectionDetail::new("connection refused".to_owned()),
         }),
-        "(CallRejected (ProviderUnreachable [connection refused]))",
+        "CallRejected.{ProviderUnreachable (connection refused)}",
     );
 }

@@ -7,8 +7,8 @@ triad: `agent` runtime, `signal-agent` ordinary contract, and
 
 It is a schema-derived `WireContract` crate: `schema/lib.schema` is the source
 of truth; `schema-rust`'s `ContractCrateBuild` emits the freshness-checked
-`src/schema/lib.rs` (wire types + rkyv + NOTA codecs over the
-`signal_frame::StreamingFrame` envelope). The crate carries no engine traits,
+`src/schema/lib.rs` (wire types + rkyv + DOTOS codecs over the
+`signal_frame::Frame` envelope). The crate carries no engine traits,
 runtime, actors, or `tokio`.
 
 ## Scope — LLM API calls, not a harness
@@ -36,7 +36,7 @@ contract crate.
   owner-side `owner-signal-agent` — a supervised component others call for
   pre-configured API agent calls (not a thin wrapper, not subsumed into Pi). It
   hooks to `mind` for skills/context (a model call plus the agent is a thinking
-  process) and takes typed NOTA directly from the model via prompt examples
+  process) and takes typed DOTOS directly from the model via prompt examples
   plus validate-and-retry, grammar-constrained when self-hosted. (The earlier
   `gdbf` framing of `agent` as an abstraction over harness backends — Claude
   Code / Codex / Pi sessions — is superseded: see **Scope** above, where
@@ -62,9 +62,9 @@ guardian) asks a configured provider to complete a prompt.
 
 - `Call(Call)` — one single-shot completion. Reply: `Completed(Completion)` or
   `CallRejected(CallRejection)`.
-- `StreamCall(StreamCall)` — the same call, streamed; opens `CompletionStream`.
-  Reply: `StreamOpened(StreamOpening)`; then `TokenStreamDelta` events, then one
-  terminal `CompletionStreamDelta` event carrying stop reason and usage.
+- `StreamCall(StreamCall)` — the same call, with an explicit
+  `StreamOpened(StreamOpening)` acknowledgement. Token and terminal completion
+  deltas remain typed `AgentEvent` payloads, routed as `Output::Event` frames.
 - `CancelStream(CancelStream)` — cancel an open stream by `StreamToken`. Reply:
   `StreamCancelled(StreamCancellation)`.
 
@@ -75,7 +75,7 @@ daemon does not yet serve.
 
 - prompt vocabulary: `Prompt`, `ChatTranscript`, `ChatMessage`, `ChatRole`
   (closed: `System` / `User` / `Assistant`), `SystemText`, `UserText`,
-  `PromptOptions`, `OutputMode` (closed: `FreeText` / `Nota`), and the
+  `PromptOptions`, `OutputMode` (closed: `FreeText` / `Dotos`), and the
   call-tuning newtypes `ModelName`, `ProviderName`, `TemperatureMilli`,
   `MaximumOutputTokens`;
 - completion vocabulary: `Completion`, `CompletionText`, `StopReasonText`,
@@ -87,7 +87,7 @@ daemon does not yet serve.
 - skeleton honesty: `RequestUnimplemented`, `OperationKind`,
   `UnimplementedReason` (all closed).
 
-The output-mode design is load-bearing: the guardian asks for `Nota` to
+The output-mode design is load-bearing: the guardian asks for `Dotos` to
 get a typed structured verdict back; the daemon asks the provider to emit JSON.
 
 ## Not owned
@@ -105,13 +105,13 @@ get a typed structured verdict back; the daemon asks the provider to emit JSON.
   `CallRejectionReason`, `OperationKind`, `UnimplementedReason` are all closed.
 - The contract names NO concrete provider. A provider is a `ProviderName`
   string resolved by the daemon's registry, so adding one is configuration.
-- Streaming is push-shaped: `StreamOpened` first, then token deltas, then one
-  terminal completion delta.
+- Stream observations are typed: `StreamOpened` acknowledges the call, then
+  `Output::Event` carries token deltas and one terminal completion delta.
 - Request payloads carry no minted identity, timestamps, or durable facts — the
   daemon mints the `StreamToken` and stamps usage.
 - Runtime code stays out of the contract crate: no actors, sockets, tokio, redb,
   or HTTP client.
-- Every operation, reply, and event variant has a NOTA and rkyv round-trip
+- Every operation, reply, and event variant has a DOTOS and rkyv round-trip
   witness in `tests/round_trip.rs`.
 
 ## Code map
@@ -121,8 +121,8 @@ schema/lib.schema       the source of truth (schema-rust grammar)
 src/schema/lib.rs        freshness-checked schema-rust artifact (generated)
 src/lib.rs               module entry + hand-written methods on emitted nouns
 build.rs                 ContractCrateBuild -> WireContract emission
-examples/canonical.nota  one canonical NOTA example per operation/reply/event
-tests/round_trip.rs      rkyv frame and NOTA round-trip witnesses
+examples/canonical.dotos  one canonical DOTOS example per operation/reply/event
+tests/round_trip.rs      rkyv frame and DOTOS round-trip witnesses
 ```
 
 ## See also

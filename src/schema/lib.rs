@@ -10,133 +10,133 @@ pub type Boolean = bool;
 pub type Path = std::string::String;
 
 #[rustfmt::skip]
-#[cfg(feature = "nota-text")]
-pub use nota::{NotaDecodeError, NotaEncode, NotaSource};
+#[cfg(feature = "dotos-text")]
+pub use dotos::{DotosDecodeError, DotosEncode, DotosSource};
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct SystemText(String);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct UserText(String);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct AssistantText(String);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct ModelName(String);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct ProviderName(String);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct StreamToken(Integer);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct TokenDelta(String);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct DeltaSequence(Integer);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct TemperatureMilli(Integer);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct MaximumOutputTokens(Integer);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct CompletionText(String);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct StopReasonText(String);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct PromptTokenCount(Integer);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct CompletionTokenCount(Integer);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct RejectionDetail(String);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(
     rkyv::Archive,
@@ -156,8 +156,8 @@ pub enum ChatRole {
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct ChatMessage {
@@ -167,16 +167,16 @@ pub struct ChatMessage {
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct ChatTranscript(Vec<ChatMessage>);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(
     rkyv::Archive,
@@ -190,13 +190,13 @@ pub struct ChatTranscript(Vec<ChatMessage>);
 )]
 pub enum OutputMode {
     FreeText,
-    Nota,
+    Dotos,
 }
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(
     rkyv::Archive,
@@ -216,8 +216,8 @@ pub enum ReasoningEffort {
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(
     rkyv::Archive,
@@ -236,56 +236,56 @@ pub enum ThinkingMode {
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct Model(Option<ModelName>);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct Provider(Option<ProviderName>);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct TemperatureMilliSelection(Option<TemperatureMilli>);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct MaximumOutputTokensSelection(Option<MaximumOutputTokens>);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct ReasoningEffortSelection(Option<ReasoningEffort>);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct ThinkingModeSelection(Option<ThinkingMode>);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct PromptOptions {
@@ -300,16 +300,16 @@ pub struct PromptOptions {
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct System(Option<SystemText>);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct Prompt {
@@ -320,24 +320,24 @@ pub struct Prompt {
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct PromptTokens(Option<PromptTokenCount>);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub(crate) struct CompletionTokens(Option<CompletionTokenCount>);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct TokenUsage {
@@ -347,32 +347,32 @@ pub struct TokenUsage {
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct Call(Prompt);
+pub struct CallPayload(Prompt);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct StreamCall(Prompt);
+pub struct StreamCallPayload(Prompt);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct CancelStream(StreamToken);
+pub struct CancelStreamPayload(StreamToken);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct Completion {
@@ -383,8 +383,8 @@ pub struct Completion {
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(
     rkyv::Archive,
@@ -401,14 +401,14 @@ pub enum CallRejectionReason {
     ProviderUnreachable,
     ProviderRejected,
     OutputModeUnsupported,
-    InvalidNotaOutput,
+    InvalidDotosOutput,
     DaemonUnconfigured,
 }
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct CallRejection {
@@ -418,24 +418,24 @@ pub struct CallRejection {
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct StreamOpening(StreamToken);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct StreamCancellation(StreamToken);
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(
     rkyv::Archive,
@@ -455,8 +455,8 @@ pub enum OperationKind {
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(
     rkyv::Archive,
@@ -474,22 +474,22 @@ pub enum UnimplementedReason {
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct RequestUnimplemented {
+pub struct RequestUnimplementedPayload {
     pub operation_kind: OperationKind,
     pub unimplemented_reason: UnimplementedReason,
 }
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct TokenStreamDelta {
+pub struct TokenStreamDeltaPayload {
     pub stream_token: StreamToken,
     pub delta_sequence: DeltaSequence,
     pub token_delta: TokenDelta,
@@ -497,11 +497,11 @@ pub struct TokenStreamDelta {
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
-pub struct CompletionStreamDelta {
+pub struct CompletionStreamDeltaPayload {
     pub stream_token: StreamToken,
     pub stop_reason_text: StopReasonText,
     pub token_usage: TokenUsage,
@@ -509,31 +509,44 @@ pub struct CompletionStreamDelta {
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub enum AgentEvent {
-    TokenStreamDelta(TokenStreamDelta),
-    CompletionStreamDelta(CompletionStreamDelta),
+    TokenStreamDelta(TokenStreamDeltaPayload),
+    CompletionStreamDelta(CompletionStreamDeltaPayload),
 }
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+)]
+#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+pub struct CompletionStream {
+    pub token: StreamToken,
+    pub stream_opening: StreamOpening,
+    pub agent_event: AgentEvent,
+    pub close: StreamToken,
+}
+
+#[rustfmt::skip]
+#[cfg_attr(
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub enum Input {
-    Call(Call),
-    StreamCall(StreamCall),
-    CancelStream(CancelStream),
+    Call(CallPayload),
+    StreamCall(StreamCallPayload),
+    CancelStream(CancelStreamPayload),
 }
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
 pub enum Output {
@@ -541,7 +554,7 @@ pub enum Output {
     CallRejected(CallRejection),
     StreamOpened(StreamOpening),
     StreamCancelled(StreamCancellation),
-    RequestUnimplemented(RequestUnimplemented),
+    RequestUnimplemented(RequestUnimplementedPayload),
     Event(AgentEvent),
 }
 
@@ -1021,7 +1034,7 @@ impl From<Option<CompletionTokenCount>> for CompletionTokens {
 }
 
 #[rustfmt::skip]
-impl Call {
+impl CallPayload {
     pub fn new(payload: Prompt) -> Self {
         Self(payload)
     }
@@ -1033,14 +1046,14 @@ impl Call {
     }
 }
 #[rustfmt::skip]
-impl From<Prompt> for Call {
+impl From<Prompt> for CallPayload {
     fn from(payload: Prompt) -> Self {
         Self::new(payload)
     }
 }
 
 #[rustfmt::skip]
-impl StreamCall {
+impl StreamCallPayload {
     pub fn new(payload: Prompt) -> Self {
         Self(payload)
     }
@@ -1052,14 +1065,14 @@ impl StreamCall {
     }
 }
 #[rustfmt::skip]
-impl From<Prompt> for StreamCall {
+impl From<Prompt> for StreamCallPayload {
     fn from(payload: Prompt) -> Self {
         Self::new(payload)
     }
 }
 
 #[rustfmt::skip]
-impl CancelStream {
+impl CancelStreamPayload {
     pub fn new(payload: StreamToken) -> Self {
         Self(payload)
     }
@@ -1071,7 +1084,7 @@ impl CancelStream {
     }
 }
 #[rustfmt::skip]
-impl From<StreamToken> for CancelStream {
+impl From<StreamToken> for CancelStreamPayload {
     fn from(payload: StreamToken) -> Self {
         Self::new(payload)
     }
@@ -1117,10 +1130,10 @@ impl From<StreamToken> for StreamCancellation {
 
 #[rustfmt::skip]
 impl AgentEvent {
-    pub fn token_stream_delta(payload: TokenStreamDelta) -> Self {
+    pub fn token_stream_delta(payload: TokenStreamDeltaPayload) -> Self {
         Self::TokenStreamDelta(payload)
     }
-    pub fn completion_stream_delta(payload: CompletionStreamDelta) -> Self {
+    pub fn completion_stream_delta(payload: CompletionStreamDeltaPayload) -> Self {
         Self::CompletionStreamDelta(payload)
     }
 }
@@ -1128,13 +1141,13 @@ impl AgentEvent {
 #[rustfmt::skip]
 impl Input {
     pub fn call(payload: Prompt) -> Self {
-        Self::Call(Call::new(payload))
+        Self::Call(CallPayload::new(payload))
     }
     pub fn stream_call(payload: Prompt) -> Self {
-        Self::StreamCall(StreamCall::new(payload))
+        Self::StreamCall(StreamCallPayload::new(payload))
     }
     pub fn cancel_stream(payload: StreamToken) -> Self {
-        Self::CancelStream(CancelStream::new(payload))
+        Self::CancelStream(CancelStreamPayload::new(payload))
     }
 }
 
@@ -1152,7 +1165,7 @@ impl Output {
     pub fn stream_cancelled(payload: StreamToken) -> Self {
         Self::StreamCancelled(StreamCancellation::new(payload))
     }
-    pub fn request_unimplemented(payload: RequestUnimplemented) -> Self {
+    pub fn request_unimplemented(payload: RequestUnimplementedPayload) -> Self {
         Self::RequestUnimplemented(payload)
     }
     pub fn event(payload: AgentEvent) -> Self {
@@ -1161,36 +1174,36 @@ impl Output {
 }
 
 #[rustfmt::skip]
-impl From<TokenStreamDelta> for AgentEvent {
-    fn from(payload: TokenStreamDelta) -> Self {
+impl From<TokenStreamDeltaPayload> for AgentEvent {
+    fn from(payload: TokenStreamDeltaPayload) -> Self {
         Self::TokenStreamDelta(payload)
     }
 }
 
 #[rustfmt::skip]
-impl From<CompletionStreamDelta> for AgentEvent {
-    fn from(payload: CompletionStreamDelta) -> Self {
+impl From<CompletionStreamDeltaPayload> for AgentEvent {
+    fn from(payload: CompletionStreamDeltaPayload) -> Self {
         Self::CompletionStreamDelta(payload)
     }
 }
 
 #[rustfmt::skip]
-impl From<Call> for Input {
-    fn from(payload: Call) -> Self {
+impl From<CallPayload> for Input {
+    fn from(payload: CallPayload) -> Self {
         Self::Call(payload)
     }
 }
 
 #[rustfmt::skip]
-impl From<StreamCall> for Input {
-    fn from(payload: StreamCall) -> Self {
+impl From<StreamCallPayload> for Input {
+    fn from(payload: StreamCallPayload) -> Self {
         Self::StreamCall(payload)
     }
 }
 
 #[rustfmt::skip]
-impl From<CancelStream> for Input {
-    fn from(payload: CancelStream) -> Self {
+impl From<CancelStreamPayload> for Input {
+    fn from(payload: CancelStreamPayload) -> Self {
         Self::CancelStream(payload)
     }
 }
@@ -1224,8 +1237,8 @@ impl From<StreamCancellation> for Output {
 }
 
 #[rustfmt::skip]
-impl From<RequestUnimplemented> for Output {
-    fn from(payload: RequestUnimplemented) -> Self {
+impl From<RequestUnimplementedPayload> for Output {
+    fn from(payload: RequestUnimplementedPayload) -> Self {
         Self::RequestUnimplemented(payload)
     }
 }
@@ -1238,89 +1251,366 @@ impl From<AgentEvent> for Output {
 }
 
 #[rustfmt::skip]
-#[cfg(feature = "nota-text")]
+#[cfg(feature = "dotos-text")]
 impl std::str::FromStr for Input {
-    type Err = NotaDecodeError;
+    type Err = DotosDecodeError;
     fn from_str(source: &str) -> Result<Self, Self::Err> {
-        NotaSource::new(source).parse::<Self>()
+        DotosSource::new(source).parse::<Self>()
     }
 }
 #[rustfmt::skip]
-#[cfg(feature = "nota-text")]
+#[cfg(feature = "dotos-text")]
 impl std::fmt::Display for Input {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        formatter.write_str(&<Self as NotaEncode>::to_nota(self))
+        formatter.write_str(&<Self as DotosEncode>::to_dotos(self))
     }
 }
 
 #[rustfmt::skip]
-#[cfg(feature = "nota-text")]
+#[cfg(feature = "dotos-text")]
 impl std::str::FromStr for Output {
-    type Err = NotaDecodeError;
+    type Err = DotosDecodeError;
     fn from_str(source: &str) -> Result<Self, Self::Err> {
-        NotaSource::new(source).parse::<Self>()
+        DotosSource::new(source).parse::<Self>()
     }
 }
 #[rustfmt::skip]
-#[cfg(feature = "nota-text")]
+#[cfg(feature = "dotos-text")]
 impl std::fmt::Display for Output {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        formatter.write_str(&<Self as NotaEncode>::to_nota(self))
+        formatter.write_str(&<Self as DotosEncode>::to_dotos(self))
     }
 }
 
 #[rustfmt::skip]
 pub mod short_header {
-    pub const INPUT_CALL: u64 = 0x0000000000000000;
-    pub const INPUT_STREAM_CALL: u64 = 0x0001000000000000;
-    pub const INPUT_CANCEL_STREAM: u64 = 0x0002000000000000;
-    pub const OUTPUT_COMPLETED: u64 = 0x0100000000000000;
-    pub const OUTPUT_CALL_REJECTED: u64 = 0x0101000000000000;
-    pub const OUTPUT_STREAM_OPENED: u64 = 0x0102000000000000;
-    pub const OUTPUT_STREAM_CANCELLED: u64 = 0x0103000000000000;
-    pub const OUTPUT_REQUEST_UNIMPLEMENTED: u64 = 0x0104000000000000;
-    pub const OUTPUT_EVENT: u64 = 0x0105000000000000;
+    pub const INPUT_CALL: u64 = 0x0000000100000001;
+    pub const INPUT_STREAM_CALL: u64 = 0x0001000100000001;
+    pub const INPUT_CANCEL_STREAM: u64 = 0x0002000100000001;
+    pub const OUTPUT_COMPLETED: u64 = 0x0100000100000001;
+    pub const OUTPUT_CALL_REJECTED: u64 = 0x0101000100000001;
+    pub const OUTPUT_STREAM_OPENED: u64 = 0x0102000100000001;
+    pub const OUTPUT_STREAM_CANCELLED: u64 = 0x0103000100000001;
+    pub const OUTPUT_REQUEST_UNIMPLEMENTED: u64 = 0x0104000100000001;
+    pub const OUTPUT_EVENT: u64 = 0x0105000100000001;
+    pub const HANDSHAKE_REQUEST: u64 = 0xFF00000100000001;
+    pub const HANDSHAKE_REPLY: u64 = 0xFF01000100000001;
+    pub const ENGINE_REFUSAL: u64 = 0xFF02000100000001;
 }
 
 #[rustfmt::skip]
-const SIGNAL_SHORT_HEADER_BYTE_COUNT: usize = 8;
+pub enum ContractMarker {}
+#[rustfmt::skip]
+impl signal_frame::WireContract for ContractMarker {
+    const BINDING: signal_frame::ContractBinding = signal_frame::ContractBinding::new(
+        match signal_frame::ContractId::try_new(1u32) {
+            Ok(contract) => contract,
+            Err(_) => panic!("generated contract ID must be nonzero"),
+        },
+        match signal_frame::WireRevision::try_new(1u16) {
+            Ok(revision) => revision,
+            Err(_) => panic!("generated wire revision must be nonzero"),
+        },
+    );
+}
+#[rustfmt::skip]
+/// Why the daemon refused to produce an ordinary reply.
+#[derive(
+    rkyv::Archive,
+    rkyv::Serialize,
+    rkyv::Deserialize,
+    Clone,
+    Copy,
+    Debug,
+    PartialEq,
+    Eq
+)]
+pub enum EngineRefusalReason {
+    /// The engine ran and rejected the request with its typed
+    /// domain error; the rendered error text is the detail.
+    Rejected,
+    /// The engine layer could not serve the request at all.
+    Unavailable,
+}
+#[rustfmt::skip]
+impl std::fmt::Display for EngineRefusalReason {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Rejected => formatter.write_str("engine rejected the request"),
+            Self::Unavailable => formatter.write_str("engine unavailable"),
+        }
+    }
+}
+#[rustfmt::skip]
+/// The refusal reply a daemon writes when the engine failed, so
+/// the caller receives a complete typed frame instead of a closed
+/// socket it cannot distinguish from daemon death. The typed
+/// engine error stays daemon-side; the wire carries the
+/// classification plus the rendered error text.
+#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+pub struct EngineRefusal {
+    pub reason: EngineRefusalReason,
+    pub detail: String,
+}
+#[rustfmt::skip]
+impl EngineRefusal {
+    pub fn rejected(detail: String) -> Self {
+        Self {
+            reason: EngineRefusalReason::Rejected,
+            detail,
+        }
+    }
+    pub fn unavailable(detail: String) -> Self {
+        Self {
+            reason: EngineRefusalReason::Unavailable,
+            detail,
+        }
+    }
+    pub fn encode_bound_frame(&self) -> Result<Vec<u8>, SignalFrameError> {
+        let archive = rkyv::to_bytes::<rkyv::rancor::Error>(self)
+            .map_err(|_| SignalFrameError::ArchiveEncode)?;
+        let mut frame = Vec::with_capacity(
+            signal_frame::SHORT_HEADER_BYTE_COUNT + archive.len(),
+        );
+        frame.extend_from_slice(&short_header::ENGINE_REFUSAL.to_le_bytes());
+        frame.extend_from_slice(&archive);
+        Ok(frame)
+    }
+}
 #[rustfmt::skip]
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum SignalFrameError {
+    FrameEncode,
     ArchiveEncode,
     ArchiveDecode,
     FrameTooShort { found: usize },
-    UnknownHeader { root_enum: &'static str, header: u64 },
-    HeaderMismatch { expected: u64, found: u64 },
+    LegacyHeader { contract_id: u32, wire_revision: u16 },
+    ContractMismatch { expected: u32, found: u32 },
+    UnsupportedWireRevision { contract_id: u32, expected: u16, found: u16 },
+    UnknownRoute { root: u8, variant: u8 },
+    RouteBodyMismatch { root: u8, variant: u8, body: &'static str },
+    UnexpectedFrameBody { found: &'static str },
+    OperationCount { found: usize },
+    EngineRefused { refusal: EngineRefusal },
 }
 #[rustfmt::skip]
 impl std::fmt::Display for SignalFrameError {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
+            Self::FrameEncode => {
+                formatter.write_str("failed to encode bound signal frame")
+            }
             Self::ArchiveEncode => formatter.write_str("failed to encode rkyv archive"),
             Self::ArchiveDecode => formatter.write_str("failed to decode rkyv archive"),
             Self::FrameTooShort { found } => {
                 write!(formatter, "signal frame too short: {found} bytes")
             }
-            Self::UnknownHeader { root_enum, header } => {
-                write!(formatter, "unknown {root_enum} short header 0x{header:016X}")
-            }
-            Self::HeaderMismatch { expected, found } => {
+            Self::LegacyHeader { contract_id, wire_revision } => {
                 write!(
                     formatter,
-                    "decoded payload header mismatch: expected 0x{expected:016X}, found 0x{found:016X}"
+                    "legacy unbound signal frame ({contract_id}, {wire_revision})"
                 )
+            }
+            Self::ContractMismatch { expected, found } => {
+                write!(
+                    formatter,
+                    "signal contract mismatch: expected {expected}, found {found}"
+                )
+            }
+            Self::UnsupportedWireRevision { contract_id, expected, found } => {
+                write!(
+                    formatter,
+                    "unsupported wire revision for contract {contract_id}: expected {expected}, found {found}"
+                )
+            }
+            Self::UnknownRoute { root, variant } => {
+                write!(formatter, "unknown bound signal route ({root}, {variant})")
+            }
+            Self::RouteBodyMismatch { root, variant, body } => {
+                write!(
+                    formatter,
+                    "bound signal route ({root}, {variant}) does not carry {body}"
+                )
+            }
+            Self::UnexpectedFrameBody { found } => {
+                write!(formatter, "expected one request frame, found {found}")
+            }
+            Self::OperationCount { found } => {
+                write!(formatter, "expected one request operation, found {found}")
+            }
+            Self::EngineRefused { refusal } => {
+                write!(formatter, "{}: {}", refusal.reason, refusal.detail)
             }
         }
     }
 }
 #[rustfmt::skip]
 impl std::error::Error for SignalFrameError {}
+#[rustfmt::skip]
+impl ContractMarker {
+    pub fn handshake_request_frame(request: signal_frame::HandshakeRequest) -> Frame {
+        Frame::new(
+            signal_frame::WireRoute::new(
+                signal_frame::RootCode::new(0xff),
+                signal_frame::VariantCode::new(0),
+            ),
+            FrameBody::HandshakeRequest(request),
+        )
+    }
+    pub fn handshake_reply_frame(reply: signal_frame::HandshakeReply) -> Frame {
+        Frame::new(
+            signal_frame::WireRoute::new(
+                signal_frame::RootCode::new(0xff),
+                signal_frame::VariantCode::new(1),
+            ),
+            FrameBody::HandshakeReply(reply),
+        )
+    }
+    pub fn decode_frame(bytes: &[u8]) -> Result<Frame, SignalFrameError> {
+        if bytes.len() < signal_frame::SHORT_HEADER_BYTE_COUNT {
+            return Err(SignalFrameError::FrameTooShort {
+                found: bytes.len(),
+            });
+        }
+        let mut header_bytes = [0_u8; signal_frame::SHORT_HEADER_BYTE_COUNT];
+        header_bytes.copy_from_slice(&bytes[..signal_frame::SHORT_HEADER_BYTE_COUNT]);
+        let header = u64::from_le_bytes(header_bytes);
+        let contract_id = header as u32;
+        let wire_revision = (header >> 32) as u16;
+        if contract_id == 0 || wire_revision == 0 {
+            return Err(SignalFrameError::LegacyHeader {
+                contract_id,
+                wire_revision,
+            });
+        }
+        if contract_id != 1u32 {
+            return Err(SignalFrameError::ContractMismatch {
+                expected: 1u32,
+                found: contract_id,
+            });
+        }
+        if wire_revision != 1u16 {
+            return Err(SignalFrameError::UnsupportedWireRevision {
+                contract_id,
+                expected: 1u16,
+                found: wire_revision,
+            });
+        }
+        let root = (header >> 56) as u8;
+        let variant = (header >> 48) as u8;
+        match (root, variant) {
+            (0, 0)
+            | (0, 1)
+            | (0, 2)
+            | (1, 0)
+            | (1, 1)
+            | (1, 2)
+            | (1, 3)
+            | (1, 4)
+            | (1, 5)
+            | (0xff, 0)
+            | (0xff, 1)
+            | (0xff, 2) => {}
+            _ => {
+                return Err(SignalFrameError::UnknownRoute {
+                    root,
+                    variant,
+                });
+            }
+        }
+        if (root, variant) == (0xff, 2) {
+            let refusal = rkyv::from_bytes::<
+                EngineRefusal,
+                rkyv::rancor::Error,
+            >(&bytes[signal_frame::SHORT_HEADER_BYTE_COUNT..])
+                .map_err(|_| SignalFrameError::ArchiveDecode)?;
+            return Err(SignalFrameError::EngineRefused {
+                refusal,
+            });
+        }
+        let frame = Frame::decode(bytes).map_err(|_| SignalFrameError::ArchiveDecode)?;
+        let header_route = signal_frame::WireRoute::new(
+            signal_frame::RootCode::new(root),
+            signal_frame::VariantCode::new(variant),
+        );
+        let body_matches = match frame.body() {
+            FrameBody::HandshakeRequest(_) => (root, variant) == (0xff, 0),
+            FrameBody::HandshakeReply(_) => (root, variant) == (0xff, 1),
+            FrameBody::Request { request, .. } => {
+                request.route().is_ok_and(|route| route == header_route)
+            }
+            FrameBody::Reply { reply, .. } => {
+                match reply {
+                    signal_frame::Reply::Accepted { per_operation, .. } => {
+                        match per_operation.head() {
+                            signal_frame::SubReply::Ok(output) => {
+                                output.wire_route() == header_route
+                            }
+                            signal_frame::SubReply::Failed {
+                                detail: Some(output),
+                                ..
+                            } => output.wire_route() == header_route,
+                            signal_frame::SubReply::Invalidated
+                            | signal_frame::SubReply::Failed { detail: None, .. }
+                            | signal_frame::SubReply::Skipped => root == 1,
+                        }
+                    }
+                    signal_frame::Reply::Rejected { .. } => root == 1,
+                }
+            }
+        };
+        if !body_matches {
+            let body = match frame.body() {
+                FrameBody::HandshakeRequest(_) => "handshake request",
+                FrameBody::HandshakeReply(_) => "handshake reply",
+                FrameBody::Request { .. } => "request",
+                FrameBody::Reply { .. } => "reply",
+            };
+            return Err(SignalFrameError::RouteBodyMismatch {
+                root,
+                variant,
+                body,
+            });
+        }
+        Ok(frame)
+    }
+    pub fn decode_single_request(
+        bytes: &[u8],
+    ) -> Result<(signal_frame::ExchangeIdentifier, Input), SignalFrameError> {
+        let frame = Self::decode_frame(bytes)?;
+        match frame.into_body() {
+            FrameBody::Request { exchange, request } => {
+                let found = request.payloads().len();
+                if found != 1 {
+                    return Err(SignalFrameError::OperationCount {
+                        found,
+                    });
+                }
+                Ok((exchange, request.payloads.into_head()))
+            }
+            FrameBody::HandshakeRequest(_) => {
+                Err(SignalFrameError::UnexpectedFrameBody {
+                    found: "handshake request",
+                })
+            }
+            FrameBody::HandshakeReply(_) => {
+                Err(SignalFrameError::UnexpectedFrameBody {
+                    found: "handshake reply",
+                })
+            }
+            FrameBody::Reply { .. } => {
+                Err(SignalFrameError::UnexpectedFrameBody {
+                    found: "reply",
+                })
+            }
+        }
+    }
+}
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(
     rkyv::Archive,
@@ -1340,8 +1630,8 @@ pub enum InputRoute {
 
 #[rustfmt::skip]
 #[cfg_attr(
-    feature = "nota-text",
-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
+    feature = "dotos-text",
+    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
 )]
 #[derive(
     rkyv::Archive,
@@ -1371,61 +1661,34 @@ impl Input {
             Self::CancelStream(_) => InputRoute::CancelStream,
         }
     }
+    pub fn wire_route(&self) -> signal_frame::WireRoute {
+        match self {
+            Self::Call(_) => {
+                signal_frame::WireRoute::new(
+                    signal_frame::RootCode::new(0),
+                    signal_frame::VariantCode::new(0),
+                )
+            }
+            Self::StreamCall(_) => {
+                signal_frame::WireRoute::new(
+                    signal_frame::RootCode::new(0),
+                    signal_frame::VariantCode::new(1),
+                )
+            }
+            Self::CancelStream(_) => {
+                signal_frame::WireRoute::new(
+                    signal_frame::RootCode::new(0),
+                    signal_frame::VariantCode::new(2),
+                )
+            }
+        }
+    }
     pub fn short_header(&self) -> u64 {
         match self {
             Self::Call(_) => short_header::INPUT_CALL,
             Self::StreamCall(_) => short_header::INPUT_STREAM_CALL,
             Self::CancelStream(_) => short_header::INPUT_CANCEL_STREAM,
         }
-    }
-    pub fn route_from_short_header(header: u64) -> Result<InputRoute, SignalFrameError> {
-        match header {
-            short_header::INPUT_CALL => Ok(InputRoute::Call),
-            short_header::INPUT_STREAM_CALL => Ok(InputRoute::StreamCall),
-            short_header::INPUT_CANCEL_STREAM => Ok(InputRoute::CancelStream),
-            _ => {
-                Err(SignalFrameError::UnknownHeader {
-                    root_enum: "Input",
-                    header,
-                })
-            }
-        }
-    }
-    pub fn encode_signal_frame(&self) -> Result<Vec<u8>, SignalFrameError> {
-        let archive = rkyv::to_bytes::<rkyv::rancor::Error>(self)
-            .map_err(|_| SignalFrameError::ArchiveEncode)?;
-        let mut frame = Vec::with_capacity(
-            SIGNAL_SHORT_HEADER_BYTE_COUNT + archive.len(),
-        );
-        frame.extend_from_slice(&self.short_header().to_le_bytes());
-        frame.extend_from_slice(&archive);
-        Ok(frame)
-    }
-    pub fn decode_signal_frame(
-        frame: &[u8],
-    ) -> Result<(InputRoute, Self), SignalFrameError> {
-        if frame.len() < SIGNAL_SHORT_HEADER_BYTE_COUNT {
-            return Err(SignalFrameError::FrameTooShort {
-                found: frame.len(),
-            });
-        }
-        let mut header_bytes = [0_u8; SIGNAL_SHORT_HEADER_BYTE_COUNT];
-        header_bytes.copy_from_slice(&frame[..SIGNAL_SHORT_HEADER_BYTE_COUNT]);
-        let header = u64::from_le_bytes(header_bytes);
-        let route = Self::route_from_short_header(header)?;
-        let value = rkyv::from_bytes::<
-            Self,
-            rkyv::rancor::Error,
-        >(&frame[SIGNAL_SHORT_HEADER_BYTE_COUNT..])
-            .map_err(|_| SignalFrameError::ArchiveDecode)?;
-        let expected = value.short_header();
-        if expected != header {
-            return Err(SignalFrameError::HeaderMismatch {
-                expected,
-                found: header,
-            });
-        }
-        Ok((route, value))
     }
 }
 
@@ -1441,6 +1704,46 @@ impl Output {
             Self::Event(_) => OutputRoute::Event,
         }
     }
+    pub fn wire_route(&self) -> signal_frame::WireRoute {
+        match self {
+            Self::Completed(_) => {
+                signal_frame::WireRoute::new(
+                    signal_frame::RootCode::new(1),
+                    signal_frame::VariantCode::new(0),
+                )
+            }
+            Self::CallRejected(_) => {
+                signal_frame::WireRoute::new(
+                    signal_frame::RootCode::new(1),
+                    signal_frame::VariantCode::new(1),
+                )
+            }
+            Self::StreamOpened(_) => {
+                signal_frame::WireRoute::new(
+                    signal_frame::RootCode::new(1),
+                    signal_frame::VariantCode::new(2),
+                )
+            }
+            Self::StreamCancelled(_) => {
+                signal_frame::WireRoute::new(
+                    signal_frame::RootCode::new(1),
+                    signal_frame::VariantCode::new(3),
+                )
+            }
+            Self::RequestUnimplemented(_) => {
+                signal_frame::WireRoute::new(
+                    signal_frame::RootCode::new(1),
+                    signal_frame::VariantCode::new(4),
+                )
+            }
+            Self::Event(_) => {
+                signal_frame::WireRoute::new(
+                    signal_frame::RootCode::new(1),
+                    signal_frame::VariantCode::new(5),
+                )
+            }
+        }
+    }
     pub fn short_header(&self) -> u64 {
         match self {
             Self::Completed(_) => short_header::OUTPUT_COMPLETED,
@@ -1450,62 +1753,6 @@ impl Output {
             Self::RequestUnimplemented(_) => short_header::OUTPUT_REQUEST_UNIMPLEMENTED,
             Self::Event(_) => short_header::OUTPUT_EVENT,
         }
-    }
-    pub fn route_from_short_header(
-        header: u64,
-    ) -> Result<OutputRoute, SignalFrameError> {
-        match header {
-            short_header::OUTPUT_COMPLETED => Ok(OutputRoute::Completed),
-            short_header::OUTPUT_CALL_REJECTED => Ok(OutputRoute::CallRejected),
-            short_header::OUTPUT_STREAM_OPENED => Ok(OutputRoute::StreamOpened),
-            short_header::OUTPUT_STREAM_CANCELLED => Ok(OutputRoute::StreamCancelled),
-            short_header::OUTPUT_REQUEST_UNIMPLEMENTED => {
-                Ok(OutputRoute::RequestUnimplemented)
-            }
-            short_header::OUTPUT_EVENT => Ok(OutputRoute::Event),
-            _ => {
-                Err(SignalFrameError::UnknownHeader {
-                    root_enum: "Output",
-                    header,
-                })
-            }
-        }
-    }
-    pub fn encode_signal_frame(&self) -> Result<Vec<u8>, SignalFrameError> {
-        let archive = rkyv::to_bytes::<rkyv::rancor::Error>(self)
-            .map_err(|_| SignalFrameError::ArchiveEncode)?;
-        let mut frame = Vec::with_capacity(
-            SIGNAL_SHORT_HEADER_BYTE_COUNT + archive.len(),
-        );
-        frame.extend_from_slice(&self.short_header().to_le_bytes());
-        frame.extend_from_slice(&archive);
-        Ok(frame)
-    }
-    pub fn decode_signal_frame(
-        frame: &[u8],
-    ) -> Result<(OutputRoute, Self), SignalFrameError> {
-        if frame.len() < SIGNAL_SHORT_HEADER_BYTE_COUNT {
-            return Err(SignalFrameError::FrameTooShort {
-                found: frame.len(),
-            });
-        }
-        let mut header_bytes = [0_u8; SIGNAL_SHORT_HEADER_BYTE_COUNT];
-        header_bytes.copy_from_slice(&frame[..SIGNAL_SHORT_HEADER_BYTE_COUNT]);
-        let header = u64::from_le_bytes(header_bytes);
-        let route = Self::route_from_short_header(header)?;
-        let value = rkyv::from_bytes::<
-            Self,
-            rkyv::rancor::Error,
-        >(&frame[SIGNAL_SHORT_HEADER_BYTE_COUNT..])
-            .map_err(|_| SignalFrameError::ArchiveDecode)?;
-        let expected = value.short_header();
-        if expected != header {
-            return Err(SignalFrameError::HeaderMismatch {
-                expected,
-                found: header,
-            });
-        }
-        Ok((route, value))
     }
 }
 
@@ -1518,13 +1765,14 @@ impl signal_frame::SignalOperationHeads for Input {
 #[rustfmt::skip]
 impl signal_frame::LogVariant for Input {
     fn log_variant(&self) -> u64 {
-        self.short_header()
+        let route = self.wire_route();
+        u64::from(route.root().value()) | (u64::from(route.variant().value()) << 8)
     }
 }
 #[rustfmt::skip]
-pub type Frame = signal_frame::StreamingFrame<Input, Output, AgentEvent>;
+pub type Frame = signal_frame::BoundExchangeFrame<ContractMarker, Input, Output>;
 #[rustfmt::skip]
-pub type FrameBody = signal_frame::StreamingFrameBody<Input, Output, AgentEvent>;
+pub type FrameBody = signal_frame::ExchangeFrameBody<Input, Output>;
 #[rustfmt::skip]
 pub type Request = signal_frame::Request<Input>;
 #[rustfmt::skip]
@@ -1534,48 +1782,44 @@ pub type RequestBuilder = signal_frame::RequestBuilder<Input>;
 #[rustfmt::skip]
 impl Input {
     pub fn into_frame(self, exchange: signal_frame::ExchangeIdentifier) -> Frame {
-        let short_header = signal_frame::ShortHeader::new(self.short_header());
+        let route = self.wire_route();
         let request = signal_frame::Request::from_payload(self);
-        Frame::with_short_header(
-            short_header,
+        Frame::new(
+            route,
             FrameBody::Request {
                 exchange,
                 request,
             },
         )
     }
+    pub fn encode_request_frame(
+        self,
+        exchange: signal_frame::ExchangeIdentifier,
+    ) -> Result<Vec<u8>, SignalFrameError> {
+        self.into_frame(exchange).encode().map_err(|_| SignalFrameError::FrameEncode)
+    }
 }
 #[rustfmt::skip]
 impl Output {
     pub fn into_reply_frame(self, exchange: signal_frame::ExchangeIdentifier) -> Frame {
-        let short_header = signal_frame::ShortHeader::new(self.short_header());
+        let route = self.wire_route();
         let reply = signal_frame::Reply::committed(
             signal_frame::NonEmpty::single(signal_frame::SubReply::Ok(self)),
         );
-        Frame::with_short_header(
-            short_header,
+        Frame::new(
+            route,
             FrameBody::Reply {
                 exchange,
                 reply,
             },
         )
     }
-}
-
-#[rustfmt::skip]
-impl AgentEvent {
-    pub fn into_subscription_frame(
+    pub fn encode_reply_frame(
         self,
-        event_identifier: signal_frame::StreamEventIdentifier,
-        token: signal_frame::SubscriptionTokenInner,
-    ) -> Frame {
-        Frame::with_short_header(
-            signal_frame::ShortHeader::new(short_header::OUTPUT_EVENT),
-            FrameBody::SubscriptionEvent {
-                event_identifier,
-                token,
-                event: self,
-            },
-        )
+        exchange: signal_frame::ExchangeIdentifier,
+    ) -> Result<Vec<u8>, SignalFrameError> {
+        self.into_reply_frame(exchange)
+            .encode()
+            .map_err(|_| SignalFrameError::FrameEncode)
     }
 }

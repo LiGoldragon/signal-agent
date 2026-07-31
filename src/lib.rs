@@ -2,9 +2,9 @@
 //!
 //! Read this crate as the public call surface of the `agent` daemon. A peer —
 //! principally the gated Spirit guardian — sends a `Call(Prompt)` and receives a
-//! `Completed(Completion)`, or opens a streaming call (`StreamCall`) and consumes
-//! `TokenStreamDelta` / `CompletionStreamDelta` events on the opened
-//! `CompletionStream`, cancelling with `CancelStream`.
+//! `Completed(Completion)`, or opens a streaming call (`StreamCall`) and receives
+//! `TokenStreamDelta` / `CompletionStreamDelta` through routed `Output::Event`
+//! frames, cancelling with `CancelStream`.
 //!
 //! Scope (psyche f8k7, iucr): `agent` makes provider HTTP API calls in an
 //! OpenAI-compatible chat-completions style; it is NOT an agent-harness front
@@ -20,6 +20,13 @@
 pub mod schema;
 
 pub use schema::lib::*;
+
+pub type Call = CallPayload;
+pub type StreamCall = StreamCallPayload;
+pub type CancelStream = CancelStreamPayload;
+pub type RequestUnimplemented = RequestUnimplementedPayload;
+pub type TokenStreamDelta = TokenStreamDeltaPayload;
+pub type CompletionStreamDelta = CompletionStreamDeltaPayload;
 
 impl ChatMessage {
     pub fn system(text: impl Into<String>) -> Self {
