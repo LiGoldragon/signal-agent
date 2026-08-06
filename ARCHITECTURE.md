@@ -5,11 +5,12 @@ LLM-call component. It is the peer-callable working signal in the `agent`
 triad: `agent` runtime, `signal-agent` ordinary contract, and
 `meta-signal-agent` meta policy contract.
 
-It is a schema-derived `WireContract` crate: `schema/lib.schema` is the source
-of truth; `schema-rust`'s `ContractCrateBuild` emits the freshness-checked
-`src/schema/lib.rs` (wire types + rkyv + DOTOS codecs over the
-`signal_frame::Frame` envelope). The crate carries no engine traits,
-runtime, actors, or `tokio`.
+It is an authority-verified Ethos Interface crate. Core Nomos revalidates the
+sealed transaction, Whole Logos carries its structural meaning, and Rust Logos
+alone projects encoded Rust coordinates. Dotos carries the human-readable text
+projection and Frame carries the bound binary envelope. The crate has no
+parallel readable Rust wire vocabulary, engine traits, runtime, actors, or
+`tokio`.
 
 ## Scope — LLM API calls, not a harness
 
@@ -87,8 +88,9 @@ daemon does not yet serve.
 - skeleton honesty: `RequestUnimplemented`, `OperationKind`,
   `UnimplementedReason` (all closed).
 
-The output-mode design is load-bearing: the guardian asks for `Dotos` to
-get a typed structured verdict back; the daemon asks the provider to emit JSON.
+The output-mode design is load-bearing: the guardian asks for `Dotos` to get a
+typed structured verdict back; the daemon asks the provider to emit one valid
+Dotos expression directly.
 
 ## Not owned
 
@@ -117,10 +119,12 @@ get a typed structured verdict back; the daemon asks the provider to emit JSON.
 ## Code map
 
 ```text
-schema/lib.schema       the source of truth (schema-rust grammar)
-src/schema/lib.rs        freshness-checked schema-rust artifact (generated)
-src/lib.rs               module entry + hand-written methods on emitted nouns
-build.rs                 ContractCrateBuild -> WireContract emission
+ethos/interface.ethos     canonical authority-verified Interface
+src/bootstrap_manifest.rs producer-owned opaque authority seats
+src/schema/lib/generated.rs Rust Logos' checked encoded projection
+src/schema/lib/behavior.rs archive, Dotos, and bound-frame behavior
+src/lib.rs                source witnesses + encoded projection export
+build.rs                  authority assembly, Nomos lowering, Rust projection
 examples/canonical.dotos  one canonical DOTOS example per operation/reply/event
 tests/round_trip.rs      rkyv frame and DOTOS round-trip witnesses
 ```

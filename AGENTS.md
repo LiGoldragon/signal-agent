@@ -10,6 +10,7 @@ makes OpenAI-compatible provider HTTP API calls; it is NOT an agent harness
 
 Keep daemon behaviour, actors, storage, the provider registry, the HTTPS call,
 and CLI surface policy out of this crate. This crate owns only the wire
-vocabulary and its DOTOS/rkyv round-trip witnesses. Edit `schema/lib.schema` and
-regenerate (`SIGNAL_AGENT_UPDATE_SCHEMA_ARTIFACTS=1 cargo build`); never
-hand-edit `src/schema/lib.rs`.
+vocabulary and its Dotos/rkyv round-trip witnesses. Edit
+`ethos/interface.ethos` and the producer-owned authority manifest together.
+Regenerate with `SIGNAL_AGENT_UPDATE_INTERFACE_ARTIFACTS=1 cargo build`; never
+hand-edit `src/schema/lib/generated.rs`.

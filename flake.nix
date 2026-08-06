@@ -26,12 +26,12 @@
           sha256 = "sha256-gh/xTkxKHL4eiRXzWv8KP7vfjSk61Iq48x47BEDFgfk=";
         };
         inherit (rust) craneLib toolchain;
-        schemaFilter =
+        ethosFilter =
           path: type:
-          type == "regular" && pkgs.lib.hasSuffix ".schema" path;
+          type == "regular" && pkgs.lib.hasSuffix ".ethos" path;
         src = rust.cleanSource {
           root = ./.;
-          extraFilters = [ schemaFilter ];
+          extraFilters = [ ethosFilter ];
         };
         commonArgs = {
           inherit src;

@@ -1,11 +1,11 @@
 [package]
 name         = "signal-agent"
-version      = "0.3.0"
+version      = "0.4.0"
 edition      = "2024"
 rust-version = "1.89"
 license      = "MIT OR Apache-2.0"
 repository   = "https://github.com/LiGoldragon/signal-agent"
-description  = "Ordinary Signal contract for the agent LLM-call component."
+description  = "Authority-verified ordinary Agent Interface."
 publish      = false
 links        = "signal-agent"
 build        = "build.rs"
@@ -16,24 +16,26 @@ path = "src/lib.rs"
 
 [features]
 default = ["dotos-text"]
-dotos-text = ["dep:dotos", "signal-frame/dotos-text"]
-
-[[test]]
-name = "round_trip"
-path = "tests/round_trip.rs"
-required-features = ["dotos-text"]
+dotos-text = ["dep:dotos", "signal-frame/dotos-text", "signal-standard/dotos-text"]
 
 [dependencies]
-dotos         = { package = "dotos", git = "https://github.com/LiGoldragon/dotos.git", rev = "80c7b17f7ad3", optional = true }
-rkyv         = { version = "0.8", default-features = false, features = ["std", "bytecheck", "little_endian", "pointer_width_32", "unaligned"] }
-signal-frame = { git = "https://github.com/LiGoldragon/signal-frame.git", rev = "ca72b2d1151f", default-features = false }
-thiserror    = "2"
+dotos = { package = "dotos", git = "https://github.com/LiGoldragon/dotos.git", rev = "80c7b17f7ad3cf547d2624c6a243e5de5f85c9f3", optional = true }
+rkyv = { version = "0.8", default-features = false, features = ["std", "bytecheck", "little_endian", "pointer_width_32", "unaligned"] }
+signal-frame = { git = "https://github.com/LiGoldragon/signal-frame.git", rev = "8aa0bcaeb29fe9e461a11706a469638d2fd109ac", default-features = false }
+signal-standard = { git = "https://github.com/LiGoldragon/signal-standard.git", rev = "d5a4a545e61dafec30667f2af38ca503ab6d6d3f", default-features = false }
+thiserror = "2"
 
 [build-dependencies]
-protos = { git = "https://github.com/LiGoldragon/protos.git", rev = "9bce5ed8efadeb157811b256aa69a1f88cd5314f" }
-schema-rust = { package = "schema-rust", git = "https://github.com/LiGoldragon/schema-rust.git", rev = "6179a7cf1394083244dd3f3e1d2709f9ec08f7db" }
+core-ethos = { git = "https://github.com/LiGoldragon/core-ethos.git", rev = "43b48c779c54ee9f05cbcc111d5d88074b162461" }
+name-table = { git = "https://github.com/LiGoldragon/name-table.git", rev = "a22f48d8040ab9235f3552ad8654ff8e27b8157d" }
+rust-logos = { git = "https://github.com/LiGoldragon/rust-logos.git", rev = "081e99596826b15e2ff7f1356ae8d797b18aeffc" }
+schema-rust = { package = "schema-rust", git = "https://github.com/LiGoldragon/schema-rust.git", rev = "664335240a40728826cfaa09e3100cd867031912", default-features = false }
+sema-translator = { git = "https://github.com/LiGoldragon/sema-translator.git", rev = "287fbd728a05b1a6be1dc8a28bcf3ca06d9916b3", default-features = false, features = ["bootstrap"] }
+signal-sema-translator = { git = "https://github.com/LiGoldragon/signal-sema-translator.git", rev = "3f41813dd63904c7e2b3da4382eff64ed1bf12fe" }
+structural-codec = { git = "https://github.com/LiGoldragon/structural-codec.git", rev = "879d76f91facedd6d5cbca79e282260e1beb9478" }
 
 [lints.rust]
 unsafe_code = "forbid"
-unused      = { level = "warn", priority = -1 }
-dead_code   = "warn"
+unused = { level = "warn", priority = -1 }
+dead_code = "warn"
+
