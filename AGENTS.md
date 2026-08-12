@@ -14,3 +14,9 @@ vocabulary and its Dotos/rkyv round-trip witnesses. Edit
 `ethos/interface.ethos` and the producer-owned authority manifest together.
 Regenerate with `SIGNAL_AGENT_UPDATE_INTERFACE_ARTIFACTS=1 cargo build`; never
 hand-edit `src/schema/lib/generated.rs`.
+
+## Protos estate status
+
+Stack: correct-new destination
+Status: active component contract, current checkout legacy-wired
+This checkout is not proof of correct-new adoption.
